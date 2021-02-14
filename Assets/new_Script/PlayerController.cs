@@ -13,11 +13,22 @@ public class PlayerController : MonoBehaviour
     private float velocityX = 0;
 
     //プレイヤーへの追加速度(横方向)
-    private float velocityX_move = 20f;
+    private float velocityX_move = 30f;
+    //左右へ移動するかどうかの判定用
+    private bool goLeft = false;
+    private bool goRight = false;
 
     //プレイヤーの左右方向位置限界
-    private float movablePos_left = -12f;
-    private float movablePos_right = 0;
+    private float movablePos_left = -11f;
+    private float movablePos_right = -1f;
+    private float XPos_start = -6f;
+
+    //プレイヤーの位置判定用
+    private string CENTER = "centerPos";
+    private string RIGHT = "rightPos";
+    private string LEFT = "leftPos";
+    //プレイヤーの初期位置
+    private string playerPos;
 
     //スクリーンタッチ時の、タッチ開始ポジションと終了ポジション
     private Vector3 touchStartPos;
@@ -32,6 +43,8 @@ public class PlayerController : MonoBehaviour
         this.playerAnimator = GetComponent<Animator>();
 
         this.playerRigidbody = GetComponent<Rigidbody>();
+
+        playerPos = CENTER;
     }
 
     // Update is called once per frame
@@ -51,43 +64,69 @@ public class PlayerController : MonoBehaviour
             switch (flickDirection)
             {
                 case "right":
-                    if(this.transform.position.x < movablePos_right)
+                    if(playerPos != RIGHT && !goLeft)
                     {
-                        velocityX = velocityX_move;
+                        goRight = true;
                     }
                     break;
 
                 case "left":
-                    if(this.transform.position.x > movablePos_left)
+                    if(playerPos != LEFT && !goRight)
                     {
-                        velocityX = -velocityX_move;
+                        goLeft = true;
                     }
                     break;
             }
         }
-
-        else if (Input.GetKey(KeyCode.LeftArrow))
+        #region pcから操作できるようにするための部分
+        if (Input.GetKey(KeyCode.LeftArrow) && playerPos != LEFT && !goRight)
         {
-            //if (this.transform.position.x > movablePos_left)
-            //{
-            //    velocityX = -velocityX_move;
-            //}
-            GoLeft();
+            goLeft = true;
         }
-        else if (Input.GetKey(KeyCode.RightArrow))
+        if (Input.GetKey(KeyCode.RightArrow) && playerPos != RIGHT && !goLeft)
         {
-            //if (this.transform.position.x < movablePos_right)
-            //{
-            //    velocityX = velocityX_move;
-            //}
-            GoRight();
+            goRight = true;
+        }
+        #endregion
+        if (goRight)//goRight = trueなら、右方向に速度を与える
+        {
+            velocityX = velocityX_move;
         }
 
+        if (goLeft)//goLeft = trueなら、左方向に速度を与える。
+        {
+            velocityX = -velocityX_move;
+        }
         //通常時のプレイヤーの速度を与える
         this.playerRigidbody.velocity = new Vector3(velocityX, 0, this.velocityZ_normal);
+
+        //右方向に移動している＆左側から移動している＆真ん中に達した場合
+        if(goRight && (playerPos == LEFT) && (this.transform.position.x >= XPos_start))
+        {
+            goRight = false;
+            playerPos = CENTER;
+        }
+        //右方向に移動している＆真ん中から移動している＆右側に達した場合
+        if (goRight && (playerPos == CENTER) && (this.transform.position.x >= movablePos_right))
+        {
+            goRight = false;
+            playerPos = RIGHT;
+        }
+        //左方向に移動している＆右側から移動している＆真ん中に達した場合
+        if (goLeft && (playerPos == RIGHT) && (this.transform.position.x <= XPos_start))
+        {
+            goLeft = false;
+            playerPos = CENTER;
+        }
+        //左方向に移動している＆真ん中から移動している＆左側に達した場合
+        if (goLeft && (playerPos == CENTER) && (this.transform.position.x <= movablePos_left))
+        {
+            goLeft = false;
+            playerPos = LEFT;
+        }
     }
 
-
+    //フリックの開始点と終点を取得して、後のメソッドに渡す
     void Flick(Touch touch)
     {
         if(touch.phase == TouchPhase.Began)
@@ -102,6 +141,7 @@ public class PlayerController : MonoBehaviour
         GetFlickDirection(touchStartPos, touchEndPos);
     }
 
+    //フリックされている方向を決める為のメソッド
     void GetFlickDirection(Vector3  touchStartPos, Vector3 touchEndPos)
     {
         float flickDirection_x = touchEndPos.x - touchStartPos.x;
@@ -139,34 +179,4 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    void GoRight()
-    {
-        velocityX = velocityX_move;
-        while(true)//movablePos_rightの座標を超えるまで、右移動を繰り返して、超えたら止まる仕組みにしたかった。
-        {
-            if(this.transform.position.x >= movablePos_right)
-            {
-                velocityX = 0;
-                break;
-            }
-
-            this.playerRigidbody.velocity = new Vector3(velocityX, 0, this.velocityZ_normal);
-        }
-    }
-
-    void GoLeft()
-    {
-        velocityX = -velocityX_move;
-
-        while (true)//movablePos_leftの座標を超えるまで、左移動を繰り返して、超えたら止まる仕組みにしたかった。
-        {
-            if (this.transform.position.x <= movablePos_left)
-            {
-                velocityX = 0;
-                break;
-            }
-
-            this.playerRigidbody.velocity = new Vector3(velocityX, 0, this.velocityZ_normal);
-        }
-    }
 }
