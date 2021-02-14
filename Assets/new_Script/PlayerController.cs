@@ -37,8 +37,8 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //横移動が入力された際の速度
-        float sideVelocityX = 0;
+        //何も操作されていないときは0
+        velocityX = 0;
 
         if(Input.touchCount > 0)//タッチされているならば
         {
@@ -60,10 +60,27 @@ public class PlayerController : MonoBehaviour
                 case "left":
                     if(this.transform.position.x > movablePos_left)
                     {
-                        velocityX = - velocityX_move;
+                        velocityX = -velocityX_move;
                     }
                     break;
             }
+        }
+
+        else if (Input.GetKey(KeyCode.LeftArrow))
+        {
+            //if (this.transform.position.x > movablePos_left)
+            //{
+            //    velocityX = -velocityX_move;
+            //}
+            GoLeft();
+        }
+        else if (Input.GetKey(KeyCode.RightArrow))
+        {
+            //if (this.transform.position.x < movablePos_right)
+            //{
+            //    velocityX = velocityX_move;
+            //}
+            GoRight();
         }
 
         //通常時のプレイヤーの速度を与える
@@ -119,6 +136,37 @@ public class PlayerController : MonoBehaviour
         {
             //設定した長さ以上のフリックがなされていなかった場合にはタッチという判定
             flickDirection = "touch";
+        }
+    }
+
+    void GoRight()
+    {
+        velocityX = velocityX_move;
+        while(true)//movablePos_rightの座標を超えるまで、右移動を繰り返して、超えたら止まる仕組みにしたかった。
+        {
+            if(this.transform.position.x >= movablePos_right)
+            {
+                velocityX = 0;
+                break;
+            }
+
+            this.playerRigidbody.velocity = new Vector3(velocityX, 0, this.velocityZ_normal);
+        }
+    }
+
+    void GoLeft()
+    {
+        velocityX = -velocityX_move;
+
+        while (true)//movablePos_leftの座標を超えるまで、左移動を繰り返して、超えたら止まる仕組みにしたかった。
+        {
+            if (this.transform.position.x <= movablePos_left)
+            {
+                velocityX = 0;
+                break;
+            }
+
+            this.playerRigidbody.velocity = new Vector3(velocityX, 0, this.velocityZ_normal);
         }
     }
 }
