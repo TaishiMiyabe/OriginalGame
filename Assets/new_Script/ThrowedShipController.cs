@@ -11,18 +11,17 @@ public class ThrowedShipController : MonoBehaviour
     ParticleSystem fireParticle;
     ParticleSystem smokeParticle;
     ParticleSystem explosionParticle;
-    private bool isExplosion = false;
-
+    private bool isExploded = false;
     private Rigidbody shipRigidbody;
 
     //飛んできた船の初期速度と初期回転速度
     private float shipVelocityX = 0;
-    private float shipVelocityY = -3f;
-    private float shipVelocityZ = -50f;
+    private float shipVelocityY;
+    private float shipVelocityZ;
     private float shipRotationX = 0.15f;
 
     //船の透明度の制御のため。
-    MeshRenderer shipMR;
+    //MeshRenderer shipMR;
 
     // Start is called before the first frame update
     void Start()
@@ -35,6 +34,9 @@ public class ThrowedShipController : MonoBehaviour
         fireParticle = fire.GetComponent<ParticleSystem>();
         smokeParticle = smoke.GetComponent<ParticleSystem>();
 
+        //速度
+        shipVelocityY = Random.Range(-8, -10);
+        shipVelocityZ = -110;
 
         //縦回転
         this.transform.Rotate(Random.Range(270, 280), 0, 0);
@@ -47,8 +49,14 @@ public class ThrowedShipController : MonoBehaviour
         explosionParticle = explosion.GetComponent<ParticleSystem>();
 
         //船のMeshRendererを取得しておく(後で透明にするために)
-        shipMR = this.GetComponent<MeshRenderer>();
-        
+        //shipMR = this.GetComponent<MeshRenderer>();
+
+        //爆発したら、船オブジェクトを消す
+        if (explosionParticle.isStopped && isExploded)
+        {
+            Destroy(this.gameObject);
+        }
+
     }
 
     // Update is called once per frame
@@ -68,9 +76,11 @@ public class ThrowedShipController : MonoBehaviour
             shipVelocityZ = 0;
             shipRotationX = 0;
 
-            //道に接触したら爆発。同時に船は壊れた想定のため、透明に。
+            //道に接触したら爆発。(同時に船は壊れた想定のため、透明に。)
             explosionParticle.Play();
-            shipMR.material.color = new Color(0, 0, 0, 1.0f);
+
+            isExploded = true;
+            //shipMR.material.color = new Color(0, 0, 0, 1.0f);
 
         }
 
