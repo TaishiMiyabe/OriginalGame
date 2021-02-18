@@ -7,6 +7,8 @@ public class ObsController : MonoBehaviour
 
     public GameObject throwedShipPrefab;
 
+    public GameObject throwedTruckPrefab;
+
     //プレイヤーがこのラインを越えたら障害物が生成される
     private float borderLine;
     //ボーダーラインを超えた後の次の新しいボーダーラインまでの距離
@@ -18,7 +20,7 @@ public class ObsController : MonoBehaviour
 
 
     //プレイヤーからどれだけ離れたところで障害物が生成されるか
-    private float distanceFromPlayer = 400f;
+    private float distanceFromPlayer;
 
     // Start is called before the first frame update
     void Start()
@@ -55,10 +57,6 @@ public class ObsController : MonoBehaviour
     //最大で同時に１つの障害物を生成
     void ObsGenerate()
     {
-        //x軸方向の生成位置は-11,-6,-1のいずれかにしたい。
-        int offsetX = -6;
-        int coefficientX = 5;
-        obsGeneratePos_x = offsetX + Random.Range(-1, 2) * coefficientX;
 
         int num = Random.Range(1, 11);
 
@@ -66,9 +64,29 @@ public class ObsController : MonoBehaviour
         if(num <= 10)
         {
             GameObject throwedShip = Instantiate(throwedShipPrefab);
-            obsGeneratePos_y = Random.Range(27, 30);
+
+            distanceFromPlayer = 400f;
+
+            //x軸方向の生成位置は-11,-6,-1のいずれかにしたい。
+            int offsetX = -6;
+            int coefficientX = 5;
+            obsGeneratePos_x = offsetX + Random.Range(-1, 2) * coefficientX;
+            //y,z軸生成位置
+            obsGeneratePos_y = 27.7f;
             obsGeneratePos_z = borderLine + distanceFromPlayer;
+
             throwedShipPrefab.transform.position = new Vector3(obsGeneratePos_x, obsGeneratePos_y, obsGeneratePos_z);
         }
+        //if (3 < num && num <= 10)//これを入れない状態なら船が上手く生成されるのに、これが入ると船の生成される位置がおかしくなる。
+        //{
+        //    GameObject throwedTruck = Instantiate(throwedTruckPrefab);
+
+        //    distanceFromPlayer = 200f;
+
+        //    obsGeneratePos_x = Random.Range(-8, -3);
+        //    obsGeneratePos_y = 5;
+        //    obsGeneratePos_z = borderLine + distanceFromPlayer;
+        //    throwedTruck.transform.position = new Vector3(obsGeneratePos_x, obsGeneratePos_y, obsGeneratePos_z);
+        //}
     }
 }

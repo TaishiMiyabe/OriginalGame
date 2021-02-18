@@ -7,10 +7,10 @@ public class ThrowedShipController : MonoBehaviour
     //火と煙と爆発
     GameObject fire;
     GameObject smoke;
-    GameObject explosion;
+    public GameObject explosion;
     ParticleSystem fireParticle;
     ParticleSystem smokeParticle;
-    ParticleSystem explosionParticle;
+    //ParticleSystem explosionParticle;
     private bool isExploded = false;
     private Rigidbody shipRigidbody;
 
@@ -20,8 +20,6 @@ public class ThrowedShipController : MonoBehaviour
     private float shipVelocityZ;
     private float shipRotationX = 0.15f;
 
-    //船の透明度の制御のため。
-    //MeshRenderer shipMR;
 
     // Start is called before the first frame update
     void Start()
@@ -35,26 +33,24 @@ public class ThrowedShipController : MonoBehaviour
         smokeParticle = smoke.GetComponent<ParticleSystem>();
 
         //速度
-        shipVelocityY = Random.Range(-8, -10);
+        shipVelocityY = -9;
         shipVelocityZ = -110;
 
         //縦回転
-        this.transform.Rotate(Random.Range(270, 280), 0, 0);
+        this.transform.Rotate(280, 0, 0);
 
         fireParticle.Play();
         smokeParticle.Play();
 
         //爆発は、道と接触した時に起こす
-        explosion = GameObject.Find("BigExplosionEffect");
-        explosionParticle = explosion.GetComponent<ParticleSystem>();
+        //explosion = GameObject.Find("BigExplosionEffect");
+        //explosionParticle = explosion.GetComponent<ParticleSystem>();
 
-        //船のMeshRendererを取得しておく(後で透明にするために)
-        //shipMR = this.GetComponent<MeshRenderer>();
 
-        //爆発したら、船オブジェクトを消す
-        if (explosionParticle.isStopped && isExploded)
+        //爆発したら、爆発を消す
+        if (isExploded)
         {
-            Destroy(this.gameObject);
+            Destroy(explosion);
         }
 
     }
@@ -76,11 +72,11 @@ public class ThrowedShipController : MonoBehaviour
             shipVelocityZ = 0;
             shipRotationX = 0;
 
-            //道に接触したら爆発。(同時に船は壊れた想定のため、透明に。)
-            explosionParticle.Play();
+            Instantiate(explosion, this.transform.position, Quaternion.identity);
+            Destroy(this.gameObject);
+
 
             isExploded = true;
-            //shipMR.material.color = new Color(0, 0, 0, 1.0f);
 
         }
 
