@@ -77,7 +77,7 @@ public class ObsController : MonoBehaviour
 
             throwedShipPrefab.transform.position = new Vector3(obsGeneratePos_x, obsGeneratePos_y, obsGeneratePos_z);
         }
-        //if (3 < num && num <= 10)//これを入れない状態なら船が上手く生成されるのに、これが入ると船の生成される位置がおかしくなる。
+        //if (3 < num && num <= 10)//これを入れない状態なら船が上手く生成されるのに、これが入ると船の生成される位置がおかしくなる。⇒入れないとまだマシにはなる。ずれるけど。。。
         //{
         //    GameObject throwedTruck = Instantiate(throwedTruckPrefab);
 
