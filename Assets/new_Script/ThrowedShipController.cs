@@ -10,8 +10,7 @@ public class ThrowedShipController : MonoBehaviour
     public GameObject explosion;
     ParticleSystem fireParticle;
     ParticleSystem smokeParticle;
-    //ParticleSystem explosionParticle;
-    private bool isExploded = false;
+
     private Rigidbody shipRigidbody;
 
     //飛んできた船の初期速度と初期回転速度
@@ -42,16 +41,8 @@ public class ThrowedShipController : MonoBehaviour
         fireParticle.Play();
         smokeParticle.Play();
 
-        //爆発は、道と接触した時に起こす
-        //explosion = GameObject.Find("BigExplosionEffect");
-        //explosionParticle = explosion.GetComponent<ParticleSystem>();
 
 
-        //爆発したら、爆発を消す
-        if (isExploded)
-        {
-            Destroy(explosion);
-        }
 
     }
 
@@ -62,7 +53,7 @@ public class ThrowedShipController : MonoBehaviour
 
         this.shipRigidbody.velocity = new Vector3(shipVelocityX, shipVelocityY, shipVelocityZ);
 
-        
+
     }
     
     void OnCollisionEnter(Collision other)
@@ -76,7 +67,6 @@ public class ThrowedShipController : MonoBehaviour
             Destroy(this.gameObject);
 
 
-            isExploded = true;
 
         }
 
