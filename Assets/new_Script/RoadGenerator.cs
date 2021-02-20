@@ -5,7 +5,12 @@ using UnityEngine;
 public class RoadGenerator : MonoBehaviour
 {
 
+    [SerializeField] GameObject[] objList_right;
+    [SerializeField] GameObject[] objList_left;
+
     public GameObject standardRoadPrefab;
+    private Vector3 stagePosition_right;
+    private Vector3 stagePosition_left;
 
     private GameObject player;
 
@@ -42,6 +47,8 @@ public class RoadGenerator : MonoBehaviour
             RoadGenerate(startLine, endLine);
             startLine = endLine;
             endLine = endLine + generateWidth;
+
+            setBuildings();
         }
     }
 
@@ -51,6 +58,24 @@ public class RoadGenerator : MonoBehaviour
         {
             GameObject road = Instantiate(standardRoadPrefab);
             road.transform.position = new Vector3(road.transform.position.x, road.transform.position.y, i);
+        }
+    }
+
+    private void setBuildings()
+    {
+        for (int i = 0; i < 50; i++)
+        {
+            //右側
+            int number1 = Random.Range(0, objList_right.Length);
+            GameObject building_right = Instantiate(objList_right[number1]);
+            stagePosition_right += building_right.GetComponent<PrefabSize>().size;
+            building_right.transform.position = new Vector3(building_right.transform.position.x, building_right.transform.position.y, stagePosition_right.x);
+
+            //左側
+            int number2 = Random.Range(0, objList_left.Length);
+            GameObject building_left = Instantiate(objList_left[number2]);
+            stagePosition_left += building_left.GetComponent<PrefabSize>().size;
+            building_left.transform.position = new Vector3(building_left.transform.position.x, building_left.transform.position.y, stagePosition_left.x);
         }
     }
 }

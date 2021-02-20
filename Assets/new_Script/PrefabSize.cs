@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SideBuildingGenerator : MonoBehaviour
+public class PrefabSize : MonoBehaviour
 {
+    public Vector3 size;
+
     // Start is called before the first frame update
     void Start()
     {
