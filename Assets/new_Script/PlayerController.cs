@@ -53,7 +53,7 @@ public class PlayerController : MonoBehaviour
         //何も操作されていないときは0
         velocityX = 0;
 
-        if(Input.touchCount > 0)//タッチされているならば
+        if (Input.touchCount > 0)//タッチされているならば
         {
             Touch touch = Input.GetTouch(0);
 
@@ -88,7 +88,55 @@ public class PlayerController : MonoBehaviour
             goRight = true;
         }
         #endregion
-       
+
+
+
+        //右方向に移動している＆左側から移動している＆真ん中に達した場合
+        if (goRight && (playerPos == LEFT) && (this.transform.position.x >= XPos_start))
+        {
+            goRight = false;
+            playerPos = CENTER;
+
+            //位置調整？
+            //this.transform.position.x = XPos_start;←エラー
+            //Vector3 tmpPos = this.transform.position;
+            //this.transform.position = new Vector3(XPos_start, tmpPos.y, tmpPos.z);
+            this.transform.position = new Vector3(XPos_start, this.transform.position.y, this.transform.position.z);
+        }
+        //右方向に移動している＆真ん中から移動している＆右側に達した場合
+        if (goRight && (playerPos == CENTER) && (this.transform.position.x >= movablePos_right))
+        {
+            goRight = false;
+            playerPos = RIGHT;
+
+            //位置調整？
+            //Vector3 tmpPos = this.transform.position;
+            //this.transform.position = new Vector3(movablePos_right, tmpPos.y, tmpPos.z);
+            this.transform.position = new Vector3(movablePos_right, this.transform.position.y, this.transform.position.z);
+        }
+        //左方向に移動している＆右側から移動している＆真ん中に達した場合
+        if (goLeft && (playerPos == RIGHT) && (this.transform.position.x <= XPos_start))
+        {
+            goLeft = false;
+            playerPos = CENTER;
+
+            //位置調整？
+            //Vector3 tmpPos = this.transform.position;
+            //this.transform.position = new Vector3(XPos_start, tmpPos.y, tmpPos.z);
+            this.transform.position = new Vector3(XPos_start, this.transform.position.y, this.transform.position.z);
+        }
+        //左方向に移動している＆真ん中から移動している＆左側に達した場合
+        if (goLeft && (playerPos == CENTER) && (this.transform.position.x <= movablePos_left))
+        {
+            goLeft = false;
+            playerPos = LEFT;
+
+            //位置調整？
+            //Vector3 tmpPos = this.transform.position;
+            //this.transform.position = new Vector3(movablePos_left, tmpPos.y, tmpPos.z);
+            this.transform.position = new Vector3(movablePos_left, this.transform.position.y, this.transform.position.z);
+        }
+
     }
 
 
@@ -106,46 +154,63 @@ public class PlayerController : MonoBehaviour
         //通常時のプレイヤーの速度を与える
         this.playerRigidbody.velocity = new Vector3(velocityX, 0, this.velocityZ_normal);
 
-        //右方向に移動している＆左側から移動している＆真ん中に達した場合
-        if (goRight && (playerPos == LEFT) && (this.transform.position.x >= XPos_start))
-        {
-            goRight = false;
-            playerPos = CENTER;
+        //    if (goRight)//goRight = trueなら、右方向に速度を与える
+        //    {
+        //        velocityX = velocityX_move;
+        //    }
 
-            //位置調整？
-            Vector3 tmpPos = this.transform.position;
-            this.transform.position = new Vector3(XPos_start, tmpPos.y, tmpPos.z);
-        }
-        //右方向に移動している＆真ん中から移動している＆右側に達した場合
-        if (goRight && (playerPos == CENTER) && (this.transform.position.x >= movablePos_right))
-        {
-            goRight = false;
-            playerPos = RIGHT;
+        //    if (goLeft)//goLeft = trueなら、左方向に速度を与える。
+        //    {
+        //        velocityX = -velocityX_move;
+        //    }
+        //    //通常時のプレイヤーの速度を与える
+        //    this.playerRigidbody.velocity = new Vector3(velocityX, 0, this.velocityZ_normal);
 
-            //位置調整？
-            Vector3 tmpPos = this.transform.position;
-            this.transform.position = new Vector3(movablePos_right, tmpPos.y, tmpPos.z);
-        }
-        //左方向に移動している＆右側から移動している＆真ん中に達した場合
-        if (goLeft && (playerPos == RIGHT) && (this.transform.position.x <= XPos_start))
-        {
-            goLeft = false;
-            playerPos = CENTER;
+        //    //右方向に移動している＆左側から移動している＆真ん中に達した場合
+        //    if (goRight && (playerPos == LEFT) && (this.transform.position.x >= XPos_start))
+        //    {
+        //        goRight = false;
+        //        playerPos = CENTER;
 
-            //位置調整？
-            Vector3 tmpPos = this.transform.position;
-            this.transform.position = new Vector3(XPos_start, tmpPos.y, tmpPos.z);
-        }
-        //左方向に移動している＆真ん中から移動している＆左側に達した場合
-        if (goLeft && (playerPos == CENTER) && (this.transform.position.x <= movablePos_left))
-        {
-            goLeft = false;
-            playerPos = LEFT;
+        //        //位置調整？
+        //        //this.transform.position.x = XPos_start;←エラー
+        //        //Vector3 tmpPos = this.transform.position;
+        //        //this.transform.position = new Vector3(XPos_start, tmpPos.y, tmpPos.z);
+        //        this.transform.position = new Vector3(XPos_start, this.transform.position.y, this.transform.position.z);
+        //    }
+        //    //右方向に移動している＆真ん中から移動している＆右側に達した場合
+        //    if (goRight && (playerPos == CENTER) && (this.transform.position.x >= movablePos_right))
+        //    {
+        //        goRight = false;
+        //        playerPos = RIGHT;
 
-            //位置調整？
-            Vector3 tmpPos = this.transform.position;
-            this.transform.position = new Vector3(movablePos_left, tmpPos.y, tmpPos.z);
-        }
+        //        //位置調整？
+        //        //Vector3 tmpPos = this.transform.position;
+        //        //this.transform.position = new Vector3(movablePos_right, tmpPos.y, tmpPos.z);
+        //        this.transform.position = new Vector3(movablePos_right, this.transform.position.y, this.transform.position.z);
+        //    }
+        //    //左方向に移動している＆右側から移動している＆真ん中に達した場合
+        //    if (goLeft && (playerPos == RIGHT) && (this.transform.position.x <= XPos_start))
+        //    {
+        //        goLeft = false;
+        //        playerPos = CENTER;
+
+        //        //位置調整？
+        //        //Vector3 tmpPos = this.transform.position;
+        //        //this.transform.position = new Vector3(XPos_start, tmpPos.y, tmpPos.z);
+        //        this.transform.position = new Vector3(XPos_start, this.transform.position.y, this.transform.position.z);
+        //    }
+        //    //左方向に移動している＆真ん中から移動している＆左側に達した場合
+        //    if (goLeft && (playerPos == CENTER) && (this.transform.position.x <= movablePos_left))
+        //    {
+        //        goLeft = false;
+        //        playerPos = LEFT;
+
+        //        //位置調整？
+        //        //Vector3 tmpPos = this.transform.position;
+        //        //this.transform.position = new Vector3(movablePos_left, tmpPos.y, tmpPos.z);
+        //        this.transform.position = new Vector3(movablePos_left, this.transform.position.y, this.transform.position.z);
+        //    }
     }
 
     //フリックの開始点と終点を取得して、後のメソッドに渡す
