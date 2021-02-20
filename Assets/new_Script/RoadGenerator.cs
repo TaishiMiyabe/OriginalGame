@@ -45,10 +45,11 @@ public class RoadGenerator : MonoBehaviour
         if(player.transform.position.z > startLine - playerPos_fromstartLine)
         {
             RoadGenerate(startLine, endLine);
+            setBuildings();
             startLine = endLine;
             endLine = endLine + generateWidth;
 
-            setBuildings();
+
         }
     }
 
@@ -69,13 +70,53 @@ public class RoadGenerator : MonoBehaviour
             int number1 = Random.Range(0, objList_right.Length);
             GameObject building_right = Instantiate(objList_right[number1]);
             stagePosition_right += building_right.GetComponent<PrefabSize>().size;
-            building_right.transform.position = new Vector3(building_right.transform.position.x, building_right.transform.position.y, stagePosition_right.x);
-
+            //作られた道の長さを配置した建物の長さが超えてしまったら、その建物はなかったことにする。
+            if (stagePosition_right.x > endLine)
+            {
+                stagePosition_right -= building_right.GetComponent<PrefabSize>().size;
+                Destroy(building_right);
+                break;
+            }
+            //Prefabによって微妙に位置調整
+            if (building_right.tag == "Building_Shop")
+            {
+                building_right.transform.position = new Vector3(building_right.transform.position.x, building_right.transform.position.y, stagePosition_right.x + 1);
+            }
+            else if (building_right.tag =="Lamp")
+            {
+                building_right.transform.position = new Vector3(building_right.transform.position.x, building_right.transform.position.y, stagePosition_right.x + 5);
+            }
+            else
+            {
+                building_right.transform.position = new Vector3(building_right.transform.position.x, building_right.transform.position.y, stagePosition_right.x);
+            }
+        }
+        for(int j = 0; j <50; j++) 
+        { 
             //左側
             int number2 = Random.Range(0, objList_left.Length);
             GameObject building_left = Instantiate(objList_left[number2]);
             stagePosition_left += building_left.GetComponent<PrefabSize>().size;
-            building_left.transform.position = new Vector3(building_left.transform.position.x, building_left.transform.position.y, stagePosition_left.x);
+            //作られた道の長さを配置した建物の長さが超えてしまったら、その建物はなかったことにする。
+            if (stagePosition_left.x > endLine)
+            {
+                stagePosition_left -= building_left.GetComponent<PrefabSize>().size;
+                Destroy(building_left);
+                break;
+            }
+            //Prefabによって微妙に位置調整
+            if (building_left.tag == "Building_OfficeStepped") 
+            {
+                building_left.transform.position = new Vector3(building_left.transform.position.x, building_left.transform.position.y, stagePosition_left.x - 4); 
+            }
+            else if (building_left.tag == "Lamp")
+            {
+                building_left.transform.position = new Vector3(building_left.transform.position.x, building_left.transform.position.y, stagePosition_left.x + 5);
+            }
+            else
+            {
+                building_left.transform.position = new Vector3(building_left.transform.position.x, building_left.transform.position.y, stagePosition_left.x);
+            }
         }
     }
 }

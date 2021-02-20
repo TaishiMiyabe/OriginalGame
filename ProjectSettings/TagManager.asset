@@ -6,6 +6,11 @@ TagManager:
   tags:
   - Road
   - ThrowedShip
+  - Building_OfficeLarge
+  - Building_OfficeMedium
+  - Building_Shop
+  - Building_OfficeStepped
+  - Lamp
   layers:
   - Default
   - TransparentFX

@@ -54,7 +54,6 @@ public class ObsController : MonoBehaviour
 
     }
 
-    //最大で同時に１つの障害物を生成
     void ObsGenerate()
     {
 
@@ -77,7 +76,7 @@ public class ObsController : MonoBehaviour
 
             throwedShip.transform.position = new Vector3(obsGeneratePos_x, obsGeneratePos_y, obsGeneratePos_z);
         }
-        if (3 < num && num <= 10)
+        if (num <= 10)
         {
             GameObject throwedtruck = Instantiate(throwedTruckPrefab);
 

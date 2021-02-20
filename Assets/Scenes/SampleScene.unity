@@ -154,9 +154,12 @@ MonoBehaviour:
   - {fileID: 5964554432832566095, guid: 81d24c778c4b57e49bd5493fbc7e6535, type: 3}
   - {fileID: 8914532628035729885, guid: 4d08fcebd08938c42bbf9337eaf4e7fe, type: 3}
   - {fileID: 1603330492647128788, guid: 820beefecac620746a75e0809610ddbe, type: 3}
+  - {fileID: 7037531672397904345, guid: 43b5ba46f820f6f4d9b3c6bfb76cbea5, type: 3}
   objList_left:
   - {fileID: 3514126879736032006, guid: b4880884c7210c64aba29be9becfbadf, type: 3}
   - {fileID: 7492935205675629715, guid: 2b3656d92ad47fe44b02d87a9e8ca6ea, type: 3}
+  - {fileID: 6226780149820801250, guid: 6e10226135e59c445893376b2654fd95, type: 3}
+  - {fileID: 3244479393666253612, guid: 54e2602c7dcdf2648a29d89f7787a79c, type: 3}
   standardRoadPrefab: {fileID: 8005798482344731851, guid: b964d87ace3613b45889a714531bf214,
     type: 3}
 --- !u!4 &419633353
