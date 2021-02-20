@@ -49,11 +49,15 @@ public class ThrowedShipController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
+
+    }
+
+    void FixedUpdate()
+    {
         this.transform.Rotate(shipRotationX, 0, 0);
 
         this.shipRigidbody.velocity = new Vector3(shipVelocityX, shipVelocityY, shipVelocityZ);
-
-
     }
     
     void OnCollisionEnter(Collision other)

@@ -72,10 +72,10 @@ public class ObsController : MonoBehaviour
             int coefficientX = 5;
             obsGeneratePos_x = offsetX + Random.Range(-1, 2) * coefficientX;
             //y,z軸生成位置
-            obsGeneratePos_y = 27.7f;
+            obsGeneratePos_y = 32.5f;
             obsGeneratePos_z = borderLine + distanceFromPlayer;
 
-            throwedShipPrefab.transform.position = new Vector3(obsGeneratePos_x, obsGeneratePos_y, obsGeneratePos_z);
+            throwedShip.transform.position = new Vector3(obsGeneratePos_x, obsGeneratePos_y, obsGeneratePos_z);
         }
         //if (3 < num && num <= 10)//これを入れない状態なら船が上手く生成されるのに、これが入ると船の生成される位置がおかしくなる。⇒入れないとまだマシにはなる。ずれるけど。。。
         //{
