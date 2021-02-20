@@ -77,16 +77,16 @@ public class ObsController : MonoBehaviour
 
             throwedShip.transform.position = new Vector3(obsGeneratePos_x, obsGeneratePos_y, obsGeneratePos_z);
         }
-        //if (3 < num && num <= 10)//これを入れない状態なら船が上手く生成されるのに、これが入ると船の生成される位置がおかしくなる。⇒入れないとまだマシにはなる。ずれるけど。。。
-        //{
-        //    GameObject throwedTruck = Instantiate(throwedTruckPrefab);
+        if (3 < num && num <= 10)
+        {
+            GameObject throwedtruck = Instantiate(throwedTruckPrefab);
 
-        //    distanceFromPlayer = 200f;
+            distanceFromPlayer = 200f;
 
-        //    obsGeneratePos_x = Random.Range(-8, -3);
-        //    obsGeneratePos_y = 5;
-        //    obsGeneratePos_z = borderLine + distanceFromPlayer;
-        //    throwedTruck.transform.position = new Vector3(obsGeneratePos_x, obsGeneratePos_y, obsGeneratePos_z);
-        //}
+            obsGeneratePos_x = Random.Range(-8, -3);
+            obsGeneratePos_y = 5;
+            obsGeneratePos_z = borderLine + distanceFromPlayer;
+            throwedtruck.transform.position = new Vector3(obsGeneratePos_x, obsGeneratePos_y, obsGeneratePos_z);
+        }
     }
 }
