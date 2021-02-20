@@ -88,6 +88,12 @@ public class PlayerController : MonoBehaviour
             goRight = true;
         }
         #endregion
+       
+    }
+
+
+    void FixedUpdate()
+    {
         if (goRight)//goRight = trueなら、右方向に速度を与える
         {
             velocityX = velocityX_move;
@@ -101,28 +107,44 @@ public class PlayerController : MonoBehaviour
         this.playerRigidbody.velocity = new Vector3(velocityX, 0, this.velocityZ_normal);
 
         //右方向に移動している＆左側から移動している＆真ん中に達した場合
-        if(goRight && (playerPos == LEFT) && (this.transform.position.x >= XPos_start))
+        if (goRight && (playerPos == LEFT) && (this.transform.position.x >= XPos_start))
         {
             goRight = false;
             playerPos = CENTER;
+
+            //位置調整？
+            Vector3 tmpPos = this.transform.position;
+            this.transform.position = new Vector3(XPos_start, tmpPos.y, tmpPos.z);
         }
         //右方向に移動している＆真ん中から移動している＆右側に達した場合
         if (goRight && (playerPos == CENTER) && (this.transform.position.x >= movablePos_right))
         {
             goRight = false;
             playerPos = RIGHT;
+
+            //位置調整？
+            Vector3 tmpPos = this.transform.position;
+            this.transform.position = new Vector3(movablePos_right, tmpPos.y, tmpPos.z);
         }
         //左方向に移動している＆右側から移動している＆真ん中に達した場合
         if (goLeft && (playerPos == RIGHT) && (this.transform.position.x <= XPos_start))
         {
             goLeft = false;
             playerPos = CENTER;
+
+            //位置調整？
+            Vector3 tmpPos = this.transform.position;
+            this.transform.position = new Vector3(XPos_start, tmpPos.y, tmpPos.z);
         }
         //左方向に移動している＆真ん中から移動している＆左側に達した場合
         if (goLeft && (playerPos == CENTER) && (this.transform.position.x <= movablePos_left))
         {
             goLeft = false;
             playerPos = LEFT;
+
+            //位置調整？
+            Vector3 tmpPos = this.transform.position;
+            this.transform.position = new Vector3(movablePos_left, tmpPos.y, tmpPos.z);
         }
     }
 
