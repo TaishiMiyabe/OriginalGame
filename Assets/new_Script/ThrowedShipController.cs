@@ -62,7 +62,7 @@ public class ThrowedShipController : MonoBehaviour
     
     void OnCollisionEnter(Collision other)
     {
-        if(other.gameObject.tag == "Road")
+        if(other.gameObject.tag == "Road" || other.gameObject.tag == "Player")
         {
             shipVelocityZ = 0;
             shipRotationX = 0;

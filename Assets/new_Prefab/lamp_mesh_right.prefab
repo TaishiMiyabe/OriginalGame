@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 2256904993802661801}
   - component: {fileID: 2402283117537333099}
   - component: {fileID: 8142077862417565180}
+  - component: {fileID: 1346135030786400323}
   m_Layer: 0
   m_Name: lamp_mesh_right
   m_TagString: Lamp
@@ -29,7 +30,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7037531672397904345}
   m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 3, y: 0, z: 3.89}
+  m_LocalPosition: {x: 3, y: 0.1, z: 3.89}
   m_LocalScale: {x: 2, y: 2, z: 2}
   m_Children:
   - {fileID: 8241236072415136015}
@@ -125,6 +126,18 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1.1097593, y: 8.552986, z: 0.8}
   m_Center: {x: 0, y: 4.273821, z: 1.4}
+--- !u!114 &1346135030786400323
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7037531672397904345}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eb0c9ef0901254b459bfc9d822ea1fec, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &8237353607535072153
 PrefabInstance:
   m_ObjectHideFlags: 0
