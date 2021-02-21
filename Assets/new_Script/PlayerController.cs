@@ -160,12 +160,13 @@ public class PlayerController : MonoBehaviour
             velocityX = -velocityX_move;
         }
         //通常時のプレイヤーの速度を与える
-        this.playerRigidbody.velocity = new Vector3(velocityX, 0, this.velocityZ_normal);
+        this.playerRigidbody.velocity = new Vector3(velocityX, this.playerRigidbody.velocity.y, this.velocityZ_normal);
 
         if (isCollided)
         {
             secondsFromCollided += Time.deltaTime;
-            this.playerRigidbody.velocity = new Vector3(velocityX, 0, this.velocityZ_slow);
+            this.playerRigidbody.velocity = new Vector3(velocityX, this.playerRigidbody.velocity.y, this.velocityZ_slow);
+
         }
 
         if(secondsFromCollided >= 2)

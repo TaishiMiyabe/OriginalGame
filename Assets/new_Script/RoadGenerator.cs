@@ -104,6 +104,20 @@ public class RoadGenerator : MonoBehaviour
             int number1 = Random.Range(0, objList_right.Length);
             if (generateFlag <= 8) {
                 GameObject building_right = Instantiate(objList_right[number1]);
+
+                //Prefabによって微妙に位置調整
+                if (building_right.tag == "Building_Shop")
+                {
+                    building_right.transform.position = new Vector3(building_right.transform.position.x, building_right.transform.position.y, stagePosition_right.x);
+                }
+                else if (building_right.tag == "Lamp")
+                {
+                    building_right.transform.position = new Vector3(building_right.transform.position.x, building_right.transform.position.y, stagePosition_right.x-5.5f);
+                }
+                else
+                {
+                    building_right.transform.position = new Vector3(building_right.transform.position.x, building_right.transform.position.y, stagePosition_right.x);
+                }
                 stagePosition_right += building_right.GetComponent<PrefabSize>().size;
                 //作られた道の長さを配置した建物の長さが超えてしまったら、その建物はなかったことにする。
                 if (stagePosition_right.x > endLine)
@@ -112,19 +126,6 @@ public class RoadGenerator : MonoBehaviour
                     Destroy(building_right);
                     break;
                 }
-                //Prefabによって微妙に位置調整
-                if (building_right.tag == "Building_Shop")
-                {
-                    building_right.transform.position = new Vector3(building_right.transform.position.x, building_right.transform.position.y, stagePosition_right.x + 1);
-                }
-                else if (building_right.tag == "Lamp")
-                {
-                    building_right.transform.position = new Vector3(building_right.transform.position.x, building_right.transform.position.y, stagePosition_right.x + 5);
-                }
-                else
-                {
-                    building_right.transform.position = new Vector3(building_right.transform.position.x, building_right.transform.position.y, stagePosition_right.x);
-                } 
             }
             else
             {
@@ -142,6 +143,21 @@ public class RoadGenerator : MonoBehaviour
             if (generateFlag2 <= 8) 
             {
                 GameObject building_left = Instantiate(objList_left[number2]);
+    
+                //Prefabによって微妙に位置調整
+                if (building_left.tag == "Building_OfficeStepped")
+                {
+                    building_left.transform.position = new Vector3(building_left.transform.position.x, building_left.transform.position.y, stagePosition_left.x + 3);
+                }
+                else if (building_left.tag == "Lamp")
+                {
+                    building_left.transform.position = new Vector3(building_left.transform.position.x, building_left.transform.position.y, stagePosition_left.x -6f);
+                }
+                else
+                {
+                    building_left.transform.position = new Vector3(building_left.transform.position.x, building_left.transform.position.y, stagePosition_left.x);
+                }
+
                 stagePosition_left += building_left.GetComponent<PrefabSize>().size;
                 //作られた道の長さを配置した建物の長さが超えてしまったら、その建物はなかったことにする。
                 if (stagePosition_left.x > endLine)
@@ -150,19 +166,6 @@ public class RoadGenerator : MonoBehaviour
                     Destroy(building_left);
                     break;
                 }
-                //Prefabによって微妙に位置調整
-                if (building_left.tag == "Building_OfficeStepped")
-                {
-                    building_left.transform.position = new Vector3(building_left.transform.position.x, building_left.transform.position.y, stagePosition_left.x - 4);
-                }
-                else if (building_left.tag == "Lamp")
-                {
-                    building_left.transform.position = new Vector3(building_left.transform.position.x, building_left.transform.position.y, stagePosition_left.x + 5);
-                }
-                else
-                {
-                    building_left.transform.position = new Vector3(building_left.transform.position.x, building_left.transform.position.y, stagePosition_left.x);
-                } 
             }
             else
             {
