@@ -13,11 +13,14 @@ public class PlayerController : MonoBehaviour
     //プレイヤーの速度(通常)
     private float velocityZ_normal = 16f;
     private float velocityX = 0;
+    private float velocityY;
 
     //プレイヤーの速度(スロー)
     private float velocityZ_slow = 5f;
     //オブジェクトにぶつかったかどうか
     private bool isCollided = false;
+    //接地しているかどうか
+    private bool isGrounded;
 
     //プレイヤーへの追加速度(横方向)
     private float velocityX_move = 30f;
@@ -149,6 +152,17 @@ public class PlayerController : MonoBehaviour
 
     void FixedUpdate()
     {
+        //地面との接地判定
+        isGrounded = CheckGrounded();
+        if (isGrounded)
+        {
+            velocityY = 0;
+        }
+        else
+        {
+            velocityY = -5;
+        }
+
         //物理演算部分だけをここに記述。
         if (goRight)//goRight = trueなら、右方向に速度を与える
         {
@@ -160,12 +174,12 @@ public class PlayerController : MonoBehaviour
             velocityX = -velocityX_move;
         }
         //通常時のプレイヤーの速度を与える
-        this.playerRigidbody.velocity = new Vector3(velocityX, -1, this.velocityZ_normal);
+        this.playerRigidbody.velocity = new Vector3(velocityX, velocityY, this.velocityZ_normal);
 
         if (isCollided)
         {
             secondsFromCollided += Time.deltaTime;
-            this.playerRigidbody.velocity = new Vector3(velocityX, -1, this.velocityZ_slow);
+            this.playerRigidbody.velocity = new Vector3(velocityX, velocityY, this.velocityZ_slow);
 
         }
 
@@ -182,6 +196,21 @@ public class PlayerController : MonoBehaviour
         {
             isCollided = true; 
         }
+    }
+
+    //地面と接地しているかの判定
+    bool CheckGrounded()
+    {
+        var controller = this.GetComponent<CharacterController>();
+        //isGroundedならtrueだが、判定が厳しすぎるので、これは十分条件
+        if (controller.isGrounded) { return true; }
+        
+        //放つ光線の初期位置と姿勢
+        var ray = new Ray(this.transform.position + Vector3.up * 0.1f, Vector3.down);
+        //探索距離
+        var tolerance = 0.3f;
+
+        return Physics.Raycast(ray, tolerance);
     }
 
     //フリックの開始点と終点を取得して、後のメソッドに渡す
