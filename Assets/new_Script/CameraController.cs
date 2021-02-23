@@ -23,8 +23,6 @@ public class CameraController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //プレイヤーの走りに合わせてカメラを移動
-        this.transform.position = new Vector3(this.transform.position.x, this.transform.position.y, this.player.transform.position.z - this.distance);
 
         if(player.transform.position.y <= -1)
         {
@@ -38,8 +36,14 @@ public class CameraController : MonoBehaviour
             else
             {
                 this.transform.Rotate(1, 0, 0);
-                this.transform.position = new Vector3(this.player.transform.position.x, this.player.transform.position.y + 5, this.player.transform.position.z);
             }
+
+            this.transform.position = new Vector3(this.player.transform.position.x, this.player.transform.position.y + 5, this.player.transform.position.z);
+        }
+        else
+        {
+            //プレイヤーの走りに合わせてカメラを移動
+            this.transform.position = new Vector3(this.transform.position.x, this.transform.position.y, this.player.transform.position.z - this.distance);
         }
     }
 }

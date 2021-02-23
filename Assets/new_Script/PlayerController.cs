@@ -154,13 +154,17 @@ public class PlayerController : MonoBehaviour
     {
         //地面との接地判定
         isGrounded = CheckGrounded();
+
         if (isGrounded)
         {
-            velocityY = 0;
+            velocityY = -1;
+            this.playerAnimator.SetBool("isFallen", false);
         }
-        else
+        
+        if(!isGrounded && this.transform.position.y <= -1)
         {
             velocityY = -5;
+            this.playerAnimator.SetBool("isFallen", true);
         }
 
         //物理演算部分だけをここに記述。
@@ -200,15 +204,11 @@ public class PlayerController : MonoBehaviour
 
     //地面と接地しているかの判定
     bool CheckGrounded()
-    {
-        var controller = this.GetComponent<CharacterController>();
-        //isGroundedならtrueだが、判定が厳しすぎるので、これは十分条件
-        if (controller.isGrounded) { return true; }
-        
+    {   
         //放つ光線の初期位置と姿勢
         var ray = new Ray(this.transform.position + Vector3.up * 0.1f, Vector3.down);
         //探索距離
-        var tolerance = 0.3f;
+        var tolerance = 0.1f;
 
         return Physics.Raycast(ray, tolerance);
     }
