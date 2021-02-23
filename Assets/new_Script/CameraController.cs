@@ -38,7 +38,14 @@ public class CameraController : MonoBehaviour
                 this.transform.Rotate(1, 0, 0);
             }
 
-            this.transform.position = new Vector3(this.player.transform.position.x, this.player.transform.position.y + 5, this.player.transform.position.z);
+            if (player.transform.position.y >= -10)
+            {
+                this.transform.position = new Vector3(this.player.transform.position.x, this.player.transform.position.y + 5, this.player.transform.position.z);
+            }
+            else
+            {
+                this.transform.position = new Vector3(this.player.transform.position.x, this.transform.position.y, this.player.transform.position.z);
+            }
         }
         else
         {

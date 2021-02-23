@@ -147,6 +147,7 @@ public class PlayerController : MonoBehaviour
             this.transform.position = new Vector3(movablePos_left, this.transform.position.y, this.transform.position.z);
         }
 
+
     }
 
 
@@ -163,7 +164,9 @@ public class PlayerController : MonoBehaviour
         
         if(!isGrounded && this.transform.position.y <= -1)
         {
+            velocityX = 0;
             velocityY = -5;
+            velocityZ_normal = 0;
             this.playerAnimator.SetBool("isFallen", true);
         }
 
