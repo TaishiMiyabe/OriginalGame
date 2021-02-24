@@ -8,7 +8,7 @@ public class UIController : MonoBehaviour
     private GameObject player;
     private float distance;
     private float score_display = 0;
-    private float scoreDisplaySpeed = 100f;
+    private float scoreDisplaySpeed = 200f;
 
     //ゲームオーバー時のフェードインパネルに関する部分
     private GameObject gameoverPanel;
@@ -22,6 +22,14 @@ public class UIController : MonoBehaviour
 
     //フェードインフェードアウトのスピード
     private float fadeSpeed = 0.002f;
+
+    //ゲームオーバー判定
+    private bool isGameOver = false;
+    public bool IsGameOver
+    {
+        get { return this.isGameOver; }//値取得用
+        private set { this.isGameOver = value; }//入力用
+    }
 
 
     // Start is called before the first frame update
@@ -69,6 +77,12 @@ public class UIController : MonoBehaviour
                     if (score_display <= distance)
                     {
                         score_display += scoreDisplaySpeed * Time.deltaTime;
+                    }
+                    else
+                    {
+                        //スコア表示が終わったらゲームオーバーフラグを立てる。
+
+                        isGameOver = true;
                     }
                         this.gameoverScoreText_3.GetComponent<Text>().text = $"{Mathf.Floor(score_display)}pt";
                      
