@@ -9,6 +9,8 @@ public class RoadGenerator : MonoBehaviour
     [SerializeField] GameObject[] objList_left;
 
     public GameObject standardRoadPrefab;
+    
+    //生成された道Prefabを、生成された順にこのリストに格納していく。
     private List<GameObject> roadList = new List<GameObject>();
 
     private float secondsFromStart;

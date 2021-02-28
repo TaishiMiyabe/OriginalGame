@@ -18,6 +18,7 @@ public class UIController : MonoBehaviour
     private GameObject gameoverScoreText_1;
     private GameObject gameoverScoreText_2;
     private GameObject gameoverScoreText_3;
+    private GameObject retryButton;
     private float second;
 
     //フェードインフェードアウトのスピード
@@ -43,8 +44,9 @@ public class UIController : MonoBehaviour
         this.gameoverScoreText_2 = GameObject.Find("GameOverScoreText_2");
         this.gameoverScoreText_3 = GameObject.Find("GameOverScoreText_3");
 
-
-
+        //ゲームオーバー時のリトライボタン
+        this.retryButton = GameObject.Find("ReGameButton");
+        retryButton.SetActive(false);
 
     }
 
@@ -83,12 +85,21 @@ public class UIController : MonoBehaviour
                         //スコア表示が終わったらゲームオーバーフラグを立てる。
 
                         isGameOver = true;
+
+                        StartCoroutine("ActivateRetryButton");
+
                     }
                         this.gameoverScoreText_3.GetComponent<Text>().text = $"{Mathf.Floor(score_display)}pt";
                      
                 }
             }
         }
+    }
 
+    IEnumerator ActivateRetryButton()
+    {
+        yield return new WaitForSeconds(1);
+
+        retryButton.SetActive(true);
     }
 }
