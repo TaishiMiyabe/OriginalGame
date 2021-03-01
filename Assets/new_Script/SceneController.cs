@@ -19,15 +19,15 @@ public class SceneController : MonoBehaviour
     void Update()
     {
         isGameOver = uiclass.IsGameOver;
-        
-        //if(isGameOver &&(Input.touchCount > 0 || Input.GetMouseButtonDown(0)))
-        //{
-        //    SceneManager.LoadScene("SampleScene");
-        //}
     }
 
     public void GetRetryButton()
     {
         SceneManager.LoadScene("SampleScene");
+    }
+
+    public void GetReturnButton()
+    {
+        SceneManager.LoadScene("title");
     }
 }

@@ -154,7 +154,9 @@ public class PlayerController : MonoBehaviour
     void FixedUpdate()
     {
         //地面との接地判定
+        
         isGrounded = CheckGrounded();
+        Debug.Log(isGrounded);
 
         if (isGrounded)
         {
@@ -164,6 +166,7 @@ public class PlayerController : MonoBehaviour
         
         if(!isGrounded && this.transform.position.y <= -1)
         {
+            //Debug.Log(isGrounded);
             velocityX = 0;
             velocityY = -5;
             velocityZ_normal = 0;
@@ -211,7 +214,7 @@ public class PlayerController : MonoBehaviour
         //放つ光線の初期位置と姿勢
         var ray = new Ray(this.transform.position + Vector3.up * 0.1f, Vector3.down);
         //探索距離
-        var tolerance = 0.1f;
+        var tolerance = 0.2f;
 
         return Physics.Raycast(ray, tolerance);
     }

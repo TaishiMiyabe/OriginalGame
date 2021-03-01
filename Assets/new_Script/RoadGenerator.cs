@@ -76,12 +76,17 @@ public class RoadGenerator : MonoBehaviour
 
     private void RoadFall()
     {
-        var childRoadRigid = roadList[0].GetComponentsInChildren<Rigidbody>();
-        foreach(var rigidbody in childRoadRigid)
+        if (roadList.Count > 0) //ArgumentOutOfRangeException対策。RoadGenerateはゲームオーバーなったら止まるけどこいつは止まらない。
         {
-            rigidbody.isKinematic = false;
-        }
+            var childRoadRigid = roadList[0].GetComponentsInChildren<Rigidbody>();//ここ
+            foreach (var rigidbody in childRoadRigid)
+            {
+                rigidbody.isKinematic = false;
+            }
+            
         roadList.RemoveAt(0);
+            
+        }
     }
 
     private void RoadGenerate(float startLine, float endLine)
