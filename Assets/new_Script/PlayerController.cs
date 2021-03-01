@@ -157,6 +157,7 @@ public class PlayerController : MonoBehaviour
         
         isGrounded = CheckGrounded();
         Debug.Log(isGrounded);
+        Debug.Log(velocityY);
 
         if (isGrounded)
         {
