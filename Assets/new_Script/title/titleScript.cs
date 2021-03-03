@@ -5,6 +5,8 @@ using UnityEngine.SceneManagement;
 
 public class titleScript : MonoBehaviour
 {
+    public static bool isSwitched = false;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -20,6 +22,7 @@ public class titleScript : MonoBehaviour
 
     public void GetStartButton()
     {
+        isSwitched = true;
         SceneManager.LoadScene("SampleScene");
     }
 }
