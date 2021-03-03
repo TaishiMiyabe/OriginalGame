@@ -71,7 +71,7 @@ public class CameraController : MonoBehaviour
             {
                 secondFromSwitched += Time.deltaTime; //ゲーム画面遷移後の時間を計測しておく
 
-                //プレイヤーを中心として、スタート地点方向ベクトルと、カメラ方向ベクトルのなす角度
+                //プレイヤーを中心として、スタート地点方向ベクトルと、カメラ方向ベクトルのなす角度(xz平面で考える)
                 float currentAngle = Vector3.Angle(new Vector3(this.player.transform.position.x - this.transform.position.x, 0, this.player.transform.position.z - this.transform.position.z), new Vector3(this.player.transform.position.x - startPosition.x, 0, this.player.transform.position.z - startPosition.z));
               
                 if (secondFromSwitched < 3)//ゲーム画面遷移後3秒は通常動作
