@@ -11,7 +11,7 @@ public class PlayerController : MonoBehaviour
     private float secondsFromCollided;
 
     //プレイヤーの速度(通常)
-    private float velocityZ_normal = 16f;
+    private float velocityZ_normal = 20f;
     private float velocityX = 0;
     private float velocityY;
 
