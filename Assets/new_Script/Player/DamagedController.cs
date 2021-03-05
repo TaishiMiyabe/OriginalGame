@@ -36,26 +36,6 @@ public class DamagedController : MonoBehaviour
         }
     }
 
-    void FixedUpdate()
-    {
-        //ダメージを受けたとき
-        if (isDamaged)
-        {
-            Debug.Log("aaaaaaaa");
-            //float level = Mathf.Abs(Mathf.Sin(Time.time * 10));
-            float level = 0;
-            Color color = gameObject.GetComponent<Renderer>().material.color;
-            color.a = level;
-            this.gameObject.GetComponent<Renderer>().material.color = color;
-
-            secondFromDamaged += Time.deltaTime;
-
-            if(secondFromDamaged >= 2)
-            {
-                isDamaged = false;
-            }
-        }
-    }
 
     void OnCollisionEnter(Collision other)
     {
