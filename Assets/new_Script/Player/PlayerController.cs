@@ -156,8 +156,6 @@ public class PlayerController : MonoBehaviour
         //地面との接地判定
         
         isGrounded = CheckGrounded();
-        Debug.Log(isGrounded);
-        Debug.Log(velocityY);
 
         if (isGrounded)
         {
