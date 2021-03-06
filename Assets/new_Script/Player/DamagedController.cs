@@ -22,7 +22,6 @@ public class DamagedController : MonoBehaviour
         //ダメージを受けたとき
         if (isDamaged)
         {
-            Debug.Log("aaaaaaaa");
             float level = Mathf.Abs(Mathf.Sin(Time.time * 10));
             Color color = child.GetComponent<SkinnedMeshRenderer>().material.color;
             color.a = level;
@@ -47,7 +46,6 @@ public class DamagedController : MonoBehaviour
         if (other.gameObject.tag != "Road")
         {
             isDamaged = true;
-            Debug.Log(isDamaged);
         }
     }
 }

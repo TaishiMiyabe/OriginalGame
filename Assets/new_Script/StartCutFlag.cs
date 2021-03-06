@@ -23,7 +23,6 @@ public class StartCutFlag : MonoBehaviour
 
     private void Director_Stopped(PlayableDirector obj)
     {
-        Debug.Log("aa");
         this.IsOver = true;
     }
 }

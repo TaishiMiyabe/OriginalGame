@@ -11,6 +11,8 @@ TagManager:
   - Building_Shop
   - Building_OfficeStepped
   - Lamp
+  - LeftLamp
+  - RightLamp
   layers:
   - Default
   - TransparentFX

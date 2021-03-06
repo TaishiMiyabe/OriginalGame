@@ -81,6 +81,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: lamp_mesh_right
       objectReference: {fileID: 0}
+    - target: {fileID: 1143601347096599660, guid: 7204091c2185c8f43a1c0b9d9d30690f,
+        type: 3}
+      propertyPath: m_TagString
+      value: Lamp
+      objectReference: {fileID: 0}
     - target: {fileID: 1143601347096887372, guid: 7204091c2185c8f43a1c0b9d9d30690f,
         type: 3}
       propertyPath: m_RootOrder
@@ -136,6 +141,12 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2200798098651291721, guid: 7204091c2185c8f43a1c0b9d9d30690f,
+        type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 13400000, guid: 468da0ddec2b10442b036239c3d1a344,
+        type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7204091c2185c8f43a1c0b9d9d30690f, type: 3}
 --- !u!4 &7037531672397604345 stripped
