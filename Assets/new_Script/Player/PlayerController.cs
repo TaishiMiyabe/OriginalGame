@@ -24,19 +24,26 @@ public class PlayerController : MonoBehaviour
 
     //プレイヤーへの追加速度(横方向)
     private float velocityX_move = 30f;
+    //プレイヤーへの追加速度(上方向)
+    private float velocityY_move = 30f;
     //左右へ移動するかどうかの判定用
     private bool goLeft = false;
     private bool goRight = false;
+    private bool goUp = false;
 
-    //プレイヤーの左右方向位置限界
+    //プレイヤーの上左右方向位置限界
     private float movablePos_left = -11f;
     private float movablePos_right = -1f;
+    private float movablePos_up = 1.5f;
     private float XPos_start = -6f;
 
     //プレイヤーの位置判定用
     private string CENTER = "centerPos";
     private string RIGHT = "rightPos";
     private string LEFT = "leftPos";
+    private string CENTERAIR = "centerAir";
+    private string LEFTAIR = "leftAir";
+    private string RIGHTAIR = "rightAir";
     //プレイヤーの初期位置
     private string playerPos;
 
@@ -74,28 +81,39 @@ public class PlayerController : MonoBehaviour
             switch (flickDirection)
             {
                 case "right":
-                    if(playerPos != RIGHT && !goLeft)
+                    if(playerPos != RIGHT && !goLeft && !goUp && (playerPos != LEFTAIR && playerPos != CENTERAIR && playerPos != RIGHTAIR))
                     {
                         goRight = true;
                     }
                     break;
 
                 case "left":
-                    if(playerPos != LEFT && !goRight)
+                    if(playerPos != LEFT && !goRight && !goUp && (playerPos != LEFTAIR && playerPos != CENTERAIR && playerPos != RIGHTAIR))
                     {
                         goLeft = true;
+                    }
+                    break;
+
+                case "up":
+                    if(!goLeft && !goRight && (playerPos != LEFTAIR && playerPos != CENTERAIR && playerPos != RIGHTAIR))
+                    {
+                        goUp = true;
                     }
                     break;
             }
         }
         #region pcから操作できるようにするための部分
-        if (Input.GetKey(KeyCode.LeftArrow) && playerPos != LEFT && !goRight)
+        if (Input.GetKey(KeyCode.LeftArrow) && playerPos != LEFT && !goRight && !goUp && (playerPos != LEFTAIR && playerPos != CENTERAIR && playerPos != RIGHTAIR))
         {
             goLeft = true;
         }
-        if (Input.GetKey(KeyCode.RightArrow) && playerPos != RIGHT && !goLeft)
+        if (Input.GetKey(KeyCode.RightArrow) && playerPos != RIGHT && !goLeft && !goUp && (playerPos != LEFTAIR && playerPos != CENTERAIR && playerPos != RIGHTAIR))
         {
             goRight = true;
+        }
+        if(Input.GetKey(KeyCode.Space) && !goRight && !goLeft &&(playerPos != LEFTAIR && playerPos != CENTERAIR && playerPos != RIGHTAIR))
+        {
+            goUp = true;
         }
         #endregion
 
@@ -146,7 +164,45 @@ public class PlayerController : MonoBehaviour
             //this.transform.position = new Vector3(movablePos_left, tmpPos.y, tmpPos.z);
             this.transform.position = new Vector3(movablePos_left, this.transform.position.y, this.transform.position.z);
         }
+        //上方向への移動&左側から移動している場合
+        if (goUp && playerPos == LEFT && (this.transform.position.y >= movablePos_up) )
+        {
+            goUp = false;
+            playerPos = LEFTAIR;
+        }
+        if( goUp && playerPos == CENTER && (this.transform.position.y >= movablePos_up))
+        {
+            goUp = false;
+            playerPos = CENTERAIR;
+        }
+        if(goUp && playerPos == RIGHT && (this.transform.position.y >= movablePos_up))
+        {
+            goUp = false;
+            playerPos = RIGHTAIR;
+        }
+        //着地した時
+        if(playerPos == LEFTAIR && isGrounded)
+        {
+            playerPos = LEFT;
+        }
+        if(playerPos == CENTERAIR && isGrounded)
+        {
+            playerPos = CENTER;
+        }
+        if(playerPos == RIGHTAIR && isGrounded)
+        {
+            playerPos = RIGHT;
+        }
 
+        if (!isGrounded && (this.transform.position.y >= 0.3))
+        {
+            this.playerAnimator.SetBool("isJumped", true);
+        }
+
+        if (this.playerAnimator.GetCurrentAnimatorStateInfo(0).IsName("Jump"))
+        {
+            this.playerAnimator.SetBool("isJumped", false);
+        }
 
     }
 
@@ -163,14 +219,14 @@ public class PlayerController : MonoBehaviour
             this.playerAnimator.SetBool("isFallen", false);
         }
         
-        if(!isGrounded && this.transform.position.y <= -1)
+        if(!isGrounded && this.transform.position.y <= -1 && !goUp)
         {
-            //Debug.Log(isGrounded);
             velocityX = 0;
             velocityY = -5;
             velocityZ_normal = 0;
             this.playerAnimator.SetBool("isFallen", true);
         }
+
 
         //物理演算部分だけをここに記述。
         if (goRight)//goRight = trueなら、右方向に速度を与える
@@ -181,6 +237,16 @@ public class PlayerController : MonoBehaviour
         if (goLeft)//goLeft = trueなら、左方向に速度を与える。
         {
             velocityX = -velocityX_move;
+        }
+
+        if (goUp)
+        {
+            velocityY = velocityY_move;
+        }
+
+        if(playerPos == LEFTAIR || playerPos == CENTERAIR || playerPos == RIGHTAIR)
+        {
+            velocityY = this.playerRigidbody.velocity.y - 1.1f;
         }
         //通常時のプレイヤーの速度を与える
         this.playerRigidbody.velocity = new Vector3(velocityX, velocityY, this.velocityZ_normal);

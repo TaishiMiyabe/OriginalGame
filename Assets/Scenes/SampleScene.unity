@@ -224,7 +224,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 179265142}
-  m_LocalRotation: {x: 0.0075934604, y: 0.0017383418, z: -0.000013200428, w: 0.99996966}
+  m_LocalRotation: {x: 0.007593464, y: 0.0017383418, z: -0.000013200434, w: 0.99996966}
   m_LocalPosition: {x: -83.72549, y: 783.79694, z: -1074.0944}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -754,7 +754,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 723149816}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9afa307c6f2615f479ba595df9238577, type: 3}
   m_Name: 
@@ -984,7 +984,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
-  m_LocalRotation: {x: -0.005241556, y: 0.9942719, z: -0.089452, w: 0.99996966}
+  m_LocalRotation: {x: -0.005241556, y: 0.9942719, z: -0.089452, w: -0.058260657}
   m_LocalPosition: {x: -4.3745117, y: 4.3530397, z: 15.794312}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
@@ -1332,6 +1332,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8592876449704463760, guid: 6b5d591dbb72ac04a80d42bbb710cb7a,
+        type: 3}
+      propertyPath: m_Name
+      value: Stickman_heads_sphere_child
       objectReference: {fileID: 0}
     - target: {fileID: 8592876449704463760, guid: 6b5d591dbb72ac04a80d42bbb710cb7a,
         type: 3}
@@ -1927,24 +1932,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &2038830845 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8592876449704463760, guid: 6b5d591dbb72ac04a80d42bbb710cb7a,
-    type: 3}
-  m_PrefabInstance: {fileID: 1640231131}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &2038830848
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2038830845}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9afa307c6f2615f479ba595df9238577, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &975821375155889811
 PrefabInstance:
   m_ObjectHideFlags: 0
