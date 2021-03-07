@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class UIController : MonoBehaviour
 {
     private GameObject player;
-    private float distance;
+    private int distance;
     private float score_display = 0;
     private float scoreDisplaySpeed = 200f;
 
@@ -18,11 +18,16 @@ public class UIController : MonoBehaviour
     private GameObject gameoverScoreText_1;
     private GameObject gameoverScoreText_2;
     private GameObject gameoverScoreText_3;
+    private GameObject distanceText;
     private GameObject retryButton;
     private GameObject returnButton;
     private GameObject startButton;
 
     private float second;
+
+    //StartCut終了時点でのプレイヤー位置を起点として距離を測る
+    private float playerStartLine;
+    private bool MeasuringStarted = false;
 
     //フェードインフェードアウトのスピード
     private float fadeSpeed = 0.002f;
@@ -46,6 +51,9 @@ public class UIController : MonoBehaviour
         this.gameoverScoreText_1 = GameObject.Find("GameOverScoreText_1");
         this.gameoverScoreText_2 = GameObject.Find("GameOverScoreText_2");
         this.gameoverScoreText_3 = GameObject.Find("GameOverScoreText_3");
+        this.distanceText = GameObject.Find("DistanceText");
+
+        distanceText.SetActive(false);
 
         //開始ボタン
         this.startButton = GameObject.Find("StartButton");
@@ -62,45 +70,68 @@ public class UIController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        distance = this.player.transform.position.z;
+        if (StartCutFlag.isOver)
+        {
+            DistanceDisplay();
+        }
 
         if (this.player.transform.position.y <= -20)
         {
-            gameoverPanel.GetComponent<Image>().color = new Color(red, green, blue, alpha);
-            alpha += fadeSpeed;
+            GameOverDisplay();
+        }
+    }
 
-            if (alpha >= 1)
+    void DistanceDisplay()
+    {
+        if (!MeasuringStarted)//プレイヤーの走行距離計測開始地点を一度だけ取得
+        {
+            playerStartLine = this.player.transform.position.z;
+            MeasuringStarted = true;
+        }
+
+        distanceText.SetActive(true);
+
+        distance = (int)Mathf.Floor(this.player.transform.position.z - playerStartLine);
+
+        this.distanceText.GetComponent<Text>().text = $"{distance}m";
+    }
+
+    void GameOverDisplay()
+    {
+        gameoverPanel.GetComponent<Image>().color = new Color(red, green, blue, alpha);
+        alpha += fadeSpeed;
+
+        if (alpha >= 1)
+        {
+            second += Time.deltaTime;
+
+            if (second >= 1)
             {
-                second += Time.deltaTime;
+                this.gameoverScoreText_1.GetComponent<Text>().text = "GAME OVER";
+            }
 
-                if (second >= 1)
+            if (second >= 1.5)
+            {
+                this.gameoverScoreText_2.GetComponent<Text>().text = "DISTANCE";
+            }
+
+            if (second >= 2)
+            {
+                if (score_display <= distance)
                 {
-                    this.gameoverScoreText_1.GetComponent<Text>().text = "GAME OVER";
+                    score_display += scoreDisplaySpeed * Time.deltaTime;
                 }
-
-                if (second >= 1.5)
+                else
                 {
-                    this.gameoverScoreText_2.GetComponent<Text>().text = "DISTANCE";
+                    //スコア表示が終わったらゲームオーバーフラグを立てる。
+
+                    isGameOver = true;
+
+                    StartCoroutine("ActivateButton");
+
                 }
+                this.gameoverScoreText_3.GetComponent<Text>().text = $"{Mathf.Floor(score_display)}pt";
 
-                if (second >= 2)
-                {
-                    if (score_display <= distance)
-                    {
-                        score_display += scoreDisplaySpeed * Time.deltaTime;
-                    }
-                    else
-                    {
-                        //スコア表示が終わったらゲームオーバーフラグを立てる。
-
-                        isGameOver = true;
-
-                        StartCoroutine("ActivateButton");
-
-                    }
-                        this.gameoverScoreText_3.GetComponent<Text>().text = $"{Mathf.Floor(score_display)}pt";
-                     
-                }
             }
         }
     }

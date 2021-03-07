@@ -67,171 +67,174 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //何も操作されていないときは0
-        velocityX = 0;
-
-        if (Input.touchCount > 0)//タッチされているならば
+        if (StartCutFlag.isOver)
         {
-            Touch touch = Input.GetTouch(0);
+            //何も操作されていないときは0
+            velocityX = 0;
 
-            //どういうフリックがされたかを設定
-            Flick(touch);
-
-            //フリックに応じたアクション
-            switch (flickDirection)
+            if (Input.touchCount > 0)//タッチされているならば
             {
-                case "right":
-                    if(playerPos != RIGHTAIR && playerPos != RIGHT && !goLeft && !goUp /*&& (playerPos != LEFTAIR && playerPos != CENTERAIR && playerPos != RIGHTAIR)*/)
-                    {
-                        goRight = true;
-                    }
-                    break;
+                Touch touch = Input.GetTouch(0);
 
-                case "left":
-                    if(playerPos != LEFTAIR && playerPos != LEFT && !goRight && !goUp /*&& (playerPos != LEFTAIR && playerPos != CENTERAIR && playerPos != RIGHTAIR)*/)
-                    {
-                        goLeft = true;
-                    }
-                    break;
+                //どういうフリックがされたかを設定
+                Flick(touch);
 
-                case "up":
-                    if(!goLeft && !goRight && (playerPos != LEFTAIR && playerPos != CENTERAIR && playerPos != RIGHTAIR))
-                    {
-                        goUp = true;
-                    }
-                    break;
+                //フリックに応じたアクション
+                switch (flickDirection)
+                {
+                    case "right":
+                        if (playerPos != RIGHTAIR && playerPos != RIGHT && !goLeft && !goUp /*&& (playerPos != LEFTAIR && playerPos != CENTERAIR && playerPos != RIGHTAIR)*/)
+                        {
+                            goRight = true;
+                        }
+                        break;
+
+                    case "left":
+                        if (playerPos != LEFTAIR && playerPos != LEFT && !goRight && !goUp /*&& (playerPos != LEFTAIR && playerPos != CENTERAIR && playerPos != RIGHTAIR)*/)
+                        {
+                            goLeft = true;
+                        }
+                        break;
+
+                    case "up":
+                        if (!goLeft && !goRight && (playerPos != LEFTAIR && playerPos != CENTERAIR && playerPos != RIGHTAIR))
+                        {
+                            goUp = true;
+                        }
+                        break;
+                }
             }
-        }
-        #region pcから操作できるようにするための部分
-        if (Input.GetKey(KeyCode.LeftArrow) && playerPos != LEFTAIR && playerPos != LEFT && !goRight && !goUp /*&& (playerPos != LEFTAIR && playerPos != CENTERAIR && playerPos != RIGHTAIR)*/)
-        {
-            goLeft = true;
-        }
-        if (Input.GetKey(KeyCode.RightArrow) && playerPos != RIGHTAIR && playerPos != RIGHT && !goLeft && !goUp /*&& (playerPos != LEFTAIR && playerPos != CENTERAIR && playerPos != RIGHTAIR)*/)
-        {
-            goRight = true;
-        }
-        if(Input.GetKey(KeyCode.Space) && !goRight && !goLeft &&(playerPos != LEFTAIR && playerPos != CENTERAIR && playerPos != RIGHTAIR))
-        {
-            goUp = true;
-        }
-        #endregion
+            #region pcから操作できるようにするための部分
+            if (Input.GetKey(KeyCode.LeftArrow) && playerPos != LEFTAIR && playerPos != LEFT && !goRight && !goUp /*&& (playerPos != LEFTAIR && playerPos != CENTERAIR && playerPos != RIGHTAIR)*/)
+            {
+                goLeft = true;
+            }
+            if (Input.GetKey(KeyCode.RightArrow) && playerPos != RIGHTAIR && playerPos != RIGHT && !goLeft && !goUp /*&& (playerPos != LEFTAIR && playerPos != CENTERAIR && playerPos != RIGHTAIR)*/)
+            {
+                goRight = true;
+            }
+            if (Input.GetKey(KeyCode.Space) && !goRight && !goLeft && (playerPos != LEFTAIR && playerPos != CENTERAIR && playerPos != RIGHTAIR))
+            {
+                goUp = true;
+            }
+            #endregion
 
 
-        #region プレイヤーの位置に関する情報を定義
-        //右方向に移動している＆左側から移動している＆真ん中に達した場合
-        if (goRight && (playerPos == LEFT) && (this.transform.position.x >= XPos_start))
-        {
-            goRight = false;
-            playerPos = CENTER;
+            #region プレイヤーの位置に関する情報を定義
+            //右方向に移動している＆左側から移動している＆真ん中に達した場合
+            if (goRight && (playerPos == LEFT) && (this.transform.position.x >= XPos_start))
+            {
+                goRight = false;
+                playerPos = CENTER;
 
-            //位置調整？
-            //this.transform.position.x = XPos_start;←エラー
-            //Vector3 tmpPos = this.transform.position;
-            //this.transform.position = new Vector3(XPos_start, tmpPos.y, tmpPos.z);
-            this.transform.position = new Vector3(XPos_start, this.transform.position.y, this.transform.position.z);
-        }
-        //右方向に移動している＆真ん中から移動している＆右側に達した場合
-        if (goRight && (playerPos == CENTER) && (this.transform.position.x >= movablePos_right))
-        {
-            goRight = false;
-            playerPos = RIGHT;
+                //位置調整？
+                //this.transform.position.x = XPos_start;←エラー
+                //Vector3 tmpPos = this.transform.position;
+                //this.transform.position = new Vector3(XPos_start, tmpPos.y, tmpPos.z);
+                this.transform.position = new Vector3(XPos_start, this.transform.position.y, this.transform.position.z);
+            }
+            //右方向に移動している＆真ん中から移動している＆右側に達した場合
+            if (goRight && (playerPos == CENTER) && (this.transform.position.x >= movablePos_right))
+            {
+                goRight = false;
+                playerPos = RIGHT;
 
-            //位置調整？
-            this.transform.position = new Vector3(movablePos_right, this.transform.position.y, this.transform.position.z);
-        }
-        //左方向に移動している＆右側から移動している＆真ん中に達した場合
-        if (goLeft && (playerPos == RIGHT) && (this.transform.position.x <= XPos_start))
-        {
-            goLeft = false;
-            playerPos = CENTER;
+                //位置調整？
+                this.transform.position = new Vector3(movablePos_right, this.transform.position.y, this.transform.position.z);
+            }
+            //左方向に移動している＆右側から移動している＆真ん中に達した場合
+            if (goLeft && (playerPos == RIGHT) && (this.transform.position.x <= XPos_start))
+            {
+                goLeft = false;
+                playerPos = CENTER;
 
-            //位置調整？
-            this.transform.position = new Vector3(XPos_start, this.transform.position.y, this.transform.position.z);
-        }
-        //左方向に移動している＆真ん中から移動している＆左側に達した場合
-        if (goLeft && (playerPos == CENTER) && (this.transform.position.x <= movablePos_left))
-        {
-            goLeft = false;
-            playerPos = LEFT;
+                //位置調整？
+                this.transform.position = new Vector3(XPos_start, this.transform.position.y, this.transform.position.z);
+            }
+            //左方向に移動している＆真ん中から移動している＆左側に達した場合
+            if (goLeft && (playerPos == CENTER) && (this.transform.position.x <= movablePos_left))
+            {
+                goLeft = false;
+                playerPos = LEFT;
 
-            this.transform.position = new Vector3(movablePos_left, this.transform.position.y, this.transform.position.z);
-        }
-        //上方向への移動&左側から移動している場合
-        if (goUp && playerPos == LEFT && (this.transform.position.y >= movablePos_up) )
-        {
-            goUp = false;
-            playerPos = LEFTAIR;
-        }
-        if( goUp && playerPos == CENTER && (this.transform.position.y >= movablePos_up))
-        {
-            goUp = false;
-            playerPos = CENTERAIR;
-        }
-        if(goUp && playerPos == RIGHT && (this.transform.position.y >= movablePos_up))
-        {
-            goUp = false;
-            playerPos = RIGHTAIR;
-        }
-        //右方向に移動している＆左上から移動している＆真ん中に達した場合
-        if (goRight && (playerPos == LEFTAIR) && (this.transform.position.x >= XPos_start))
-        {
-            goRight = false;
-            playerPos = CENTERAIR;
+                this.transform.position = new Vector3(movablePos_left, this.transform.position.y, this.transform.position.z);
+            }
+            //上方向への移動&左側から移動している場合
+            if (goUp && playerPos == LEFT && (this.transform.position.y >= movablePos_up))
+            {
+                goUp = false;
+                playerPos = LEFTAIR;
+            }
+            if (goUp && playerPos == CENTER && (this.transform.position.y >= movablePos_up))
+            {
+                goUp = false;
+                playerPos = CENTERAIR;
+            }
+            if (goUp && playerPos == RIGHT && (this.transform.position.y >= movablePos_up))
+            {
+                goUp = false;
+                playerPos = RIGHTAIR;
+            }
+            //右方向に移動している＆左上から移動している＆真ん中に達した場合
+            if (goRight && (playerPos == LEFTAIR) && (this.transform.position.x >= XPos_start))
+            {
+                goRight = false;
+                playerPos = CENTERAIR;
 
-            //位置調整？
-            this.transform.position = new Vector3(XPos_start, this.transform.position.y, this.transform.position.z);
-        }
-        //右方向に移動している＆中央上から移動している＆右上に達した場合
-        if (goRight && (playerPos == CENTERAIR) && (this.transform.position.x >= movablePos_right))
-        {
-            goRight = false;
-            playerPos = RIGHTAIR;
+                //位置調整？
+                this.transform.position = new Vector3(XPos_start, this.transform.position.y, this.transform.position.z);
+            }
+            //右方向に移動している＆中央上から移動している＆右上に達した場合
+            if (goRight && (playerPos == CENTERAIR) && (this.transform.position.x >= movablePos_right))
+            {
+                goRight = false;
+                playerPos = RIGHTAIR;
 
-            //位置調整？
-            this.transform.position = new Vector3(movablePos_right, this.transform.position.y, this.transform.position.z);
-        }
-        //左方向に移動している＆右上から移動している＆真ん中に達した場合
-        if (goLeft && (playerPos == RIGHTAIR) && (this.transform.position.x <= XPos_start))
-        {
-            goLeft= false;
-            playerPos = CENTERAIR;
+                //位置調整？
+                this.transform.position = new Vector3(movablePos_right, this.transform.position.y, this.transform.position.z);
+            }
+            //左方向に移動している＆右上から移動している＆真ん中に達した場合
+            if (goLeft && (playerPos == RIGHTAIR) && (this.transform.position.x <= XPos_start))
+            {
+                goLeft = false;
+                playerPos = CENTERAIR;
 
-            //位置調整？
-            this.transform.position = new Vector3(XPos_start, this.transform.position.y, this.transform.position.z);
-        }
-        //左方向に移動している＆真ん中上から移動している＆左上に達した場合
-        if (goLeft && (playerPos == CENTERAIR) && (this.transform.position.x <= movablePos_left))
-        {
-            goLeft = false;
-            playerPos = LEFTAIR;
+                //位置調整？
+                this.transform.position = new Vector3(XPos_start, this.transform.position.y, this.transform.position.z);
+            }
+            //左方向に移動している＆真ん中上から移動している＆左上に達した場合
+            if (goLeft && (playerPos == CENTERAIR) && (this.transform.position.x <= movablePos_left))
+            {
+                goLeft = false;
+                playerPos = LEFTAIR;
 
-            //位置調整？
-            this.transform.position = new Vector3(movablePos_left, this.transform.position.y, this.transform.position.z);
-        }
-        //着地した時
-        if (playerPos == LEFTAIR && isGrounded)
-        {
-            playerPos = LEFT;
-        }
-        if(playerPos == CENTERAIR && isGrounded)
-        {
-            playerPos = CENTER;
-        }
-        if(playerPos == RIGHTAIR && isGrounded)
-        {
-            playerPos = RIGHT;
-        }
-        #endregion
+                //位置調整？
+                this.transform.position = new Vector3(movablePos_left, this.transform.position.y, this.transform.position.z);
+            }
+            //着地した時
+            if (playerPos == LEFTAIR && isGrounded)
+            {
+                playerPos = LEFT;
+            }
+            if (playerPos == CENTERAIR && isGrounded)
+            {
+                playerPos = CENTER;
+            }
+            if (playerPos == RIGHTAIR && isGrounded)
+            {
+                playerPos = RIGHT;
+            }
+            #endregion
 
-        if (!isGrounded && (this.transform.position.y >= 0.3))
-        {
-            this.playerAnimator.SetBool("isJumped", true);
-        }
+            if (!isGrounded && (this.transform.position.y >= 0.3))
+            {
+                this.playerAnimator.SetBool("isJumped", true);
+            }
 
-        if (this.playerAnimator.GetCurrentAnimatorStateInfo(0).IsName("Jump"))
-        {
-            this.playerAnimator.SetBool("isJumped", false);
+            if (this.playerAnimator.GetCurrentAnimatorStateInfo(0).IsName("Jump"))
+            {
+                this.playerAnimator.SetBool("isJumped", false);
+            }
         }
     }
 

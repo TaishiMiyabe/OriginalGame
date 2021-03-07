@@ -57,7 +57,7 @@ public class RoadGenerator : MonoBehaviour
 
         if(secondsFromStart >= 3)
         {
-            if (seconds >= 1.5f) 
+            if (seconds >= 1.2f) 
             {
                 RoadFall();
                 seconds = 0;
