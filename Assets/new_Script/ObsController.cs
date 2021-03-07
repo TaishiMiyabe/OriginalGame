@@ -22,13 +22,16 @@ public class ObsController : MonoBehaviour
     //プレイヤーからどれだけ離れたところで障害物が生成されるか
     private float distanceFromPlayer;
 
+    //同時トラック生成数
+    private int numTruckGenerate = 3;
+
     // Start is called before the first frame update
     void Start()
     {
 
         //最初のラインは30 ボーダー間距離は50
         borderLine = 30f;
-        distanceFromOldBorder = 50f;
+        distanceFromOldBorder = 40f;
 
     }
 
@@ -47,7 +50,10 @@ public class ObsController : MonoBehaviour
 
         if (playerPos.z >= borderLine) 
         {
-            this.ObsGenerate();
+            if (StartCutFlag.isOver)
+            {
+                this.ObsGenerate();
+            }
             borderLine += distanceFromOldBorder;
         }
 
@@ -78,14 +84,17 @@ public class ObsController : MonoBehaviour
         }
         if (num <= 10)
         {
-            GameObject throwedtruck = Instantiate(throwedTruckPrefab);
+            for (int i = 0; i < numTruckGenerate; i++)
+            {
+                GameObject throwedtruck = Instantiate(throwedTruckPrefab);
 
-            distanceFromPlayer = 200f;
+                distanceFromPlayer = 200f;
 
-            obsGeneratePos_x = Random.Range(-8, -3);
-            obsGeneratePos_y = 5;
-            obsGeneratePos_z = borderLine + distanceFromPlayer;
-            throwedtruck.transform.position = new Vector3(obsGeneratePos_x, obsGeneratePos_y, obsGeneratePos_z);
+                obsGeneratePos_x = Random.Range(-8, -3);
+                obsGeneratePos_y = Random.Range(4, 5);
+                obsGeneratePos_z = borderLine + distanceFromPlayer + Random.Range(0, 30);
+                throwedtruck.transform.position = new Vector3(obsGeneratePos_x, obsGeneratePos_y, obsGeneratePos_z);
+            }
         }
     }
 }

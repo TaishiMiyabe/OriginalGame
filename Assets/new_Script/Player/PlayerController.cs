@@ -34,7 +34,7 @@ public class PlayerController : MonoBehaviour
     //プレイヤーの上左右方向位置限界
     private float movablePos_left = -11f;
     private float movablePos_right = -1f;
-    private float movablePos_up = 1.5f;
+    private float movablePos_up = 1.2f;
     private float XPos_start = -6f;
 
     //プレイヤーの位置判定用
@@ -81,14 +81,14 @@ public class PlayerController : MonoBehaviour
             switch (flickDirection)
             {
                 case "right":
-                    if(playerPos != RIGHT && !goLeft && !goUp && (playerPos != LEFTAIR && playerPos != CENTERAIR && playerPos != RIGHTAIR))
+                    if(playerPos != RIGHTAIR && playerPos != RIGHT && !goLeft && !goUp /*&& (playerPos != LEFTAIR && playerPos != CENTERAIR && playerPos != RIGHTAIR)*/)
                     {
                         goRight = true;
                     }
                     break;
 
                 case "left":
-                    if(playerPos != LEFT && !goRight && !goUp && (playerPos != LEFTAIR && playerPos != CENTERAIR && playerPos != RIGHTAIR))
+                    if(playerPos != LEFTAIR && playerPos != LEFT && !goRight && !goUp /*&& (playerPos != LEFTAIR && playerPos != CENTERAIR && playerPos != RIGHTAIR)*/)
                     {
                         goLeft = true;
                     }
@@ -103,11 +103,11 @@ public class PlayerController : MonoBehaviour
             }
         }
         #region pcから操作できるようにするための部分
-        if (Input.GetKey(KeyCode.LeftArrow) && playerPos != LEFT && !goRight && !goUp && (playerPos != LEFTAIR && playerPos != CENTERAIR && playerPos != RIGHTAIR))
+        if (Input.GetKey(KeyCode.LeftArrow) && playerPos != LEFTAIR && playerPos != LEFT && !goRight && !goUp /*&& (playerPos != LEFTAIR && playerPos != CENTERAIR && playerPos != RIGHTAIR)*/)
         {
             goLeft = true;
         }
-        if (Input.GetKey(KeyCode.RightArrow) && playerPos != RIGHT && !goLeft && !goUp && (playerPos != LEFTAIR && playerPos != CENTERAIR && playerPos != RIGHTAIR))
+        if (Input.GetKey(KeyCode.RightArrow) && playerPos != RIGHTAIR && playerPos != RIGHT && !goLeft && !goUp /*&& (playerPos != LEFTAIR && playerPos != CENTERAIR && playerPos != RIGHTAIR)*/)
         {
             goRight = true;
         }
@@ -118,7 +118,7 @@ public class PlayerController : MonoBehaviour
         #endregion
 
 
-
+        #region プレイヤーの位置に関する情報を定義
         //右方向に移動している＆左側から移動している＆真ん中に達した場合
         if (goRight && (playerPos == LEFT) && (this.transform.position.x >= XPos_start))
         {
@@ -138,8 +138,6 @@ public class PlayerController : MonoBehaviour
             playerPos = RIGHT;
 
             //位置調整？
-            //Vector3 tmpPos = this.transform.position;
-            //this.transform.position = new Vector3(movablePos_right, tmpPos.y, tmpPos.z);
             this.transform.position = new Vector3(movablePos_right, this.transform.position.y, this.transform.position.z);
         }
         //左方向に移動している＆右側から移動している＆真ん中に達した場合
@@ -149,8 +147,6 @@ public class PlayerController : MonoBehaviour
             playerPos = CENTER;
 
             //位置調整？
-            //Vector3 tmpPos = this.transform.position;
-            //this.transform.position = new Vector3(XPos_start, tmpPos.y, tmpPos.z);
             this.transform.position = new Vector3(XPos_start, this.transform.position.y, this.transform.position.z);
         }
         //左方向に移動している＆真ん中から移動している＆左側に達した場合
@@ -159,9 +155,6 @@ public class PlayerController : MonoBehaviour
             goLeft = false;
             playerPos = LEFT;
 
-            //位置調整？
-            //Vector3 tmpPos = this.transform.position;
-            //this.transform.position = new Vector3(movablePos_left, tmpPos.y, tmpPos.z);
             this.transform.position = new Vector3(movablePos_left, this.transform.position.y, this.transform.position.z);
         }
         //上方向への移動&左側から移動している場合
@@ -180,8 +173,44 @@ public class PlayerController : MonoBehaviour
             goUp = false;
             playerPos = RIGHTAIR;
         }
+        //右方向に移動している＆左上から移動している＆真ん中に達した場合
+        if (goRight && (playerPos == LEFTAIR) && (this.transform.position.x >= XPos_start))
+        {
+            goRight = false;
+            playerPos = CENTERAIR;
+
+            //位置調整？
+            this.transform.position = new Vector3(XPos_start, this.transform.position.y, this.transform.position.z);
+        }
+        //右方向に移動している＆中央上から移動している＆右上に達した場合
+        if (goRight && (playerPos == CENTERAIR) && (this.transform.position.x >= movablePos_right))
+        {
+            goRight = false;
+            playerPos = RIGHTAIR;
+
+            //位置調整？
+            this.transform.position = new Vector3(movablePos_right, this.transform.position.y, this.transform.position.z);
+        }
+        //左方向に移動している＆右上から移動している＆真ん中に達した場合
+        if (goLeft && (playerPos == RIGHTAIR) && (this.transform.position.x <= XPos_start))
+        {
+            goLeft= false;
+            playerPos = CENTERAIR;
+
+            //位置調整？
+            this.transform.position = new Vector3(XPos_start, this.transform.position.y, this.transform.position.z);
+        }
+        //左方向に移動している＆真ん中上から移動している＆左上に達した場合
+        if (goLeft && (playerPos == CENTERAIR) && (this.transform.position.x <= movablePos_left))
+        {
+            goLeft = false;
+            playerPos = LEFTAIR;
+
+            //位置調整？
+            this.transform.position = new Vector3(movablePos_left, this.transform.position.y, this.transform.position.z);
+        }
         //着地した時
-        if(playerPos == LEFTAIR && isGrounded)
+        if (playerPos == LEFTAIR && isGrounded)
         {
             playerPos = LEFT;
         }
@@ -193,6 +222,7 @@ public class PlayerController : MonoBehaviour
         {
             playerPos = RIGHT;
         }
+        #endregion
 
         if (!isGrounded && (this.transform.position.y >= 0.3))
         {
@@ -203,7 +233,6 @@ public class PlayerController : MonoBehaviour
         {
             this.playerAnimator.SetBool("isJumped", false);
         }
-
     }
 
 

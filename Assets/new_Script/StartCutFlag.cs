@@ -5,13 +5,7 @@ using UnityEngine.Playables;
 
 public class StartCutFlag : MonoBehaviour
 {
-    private bool isOver = false;
-
-    public bool IsOver
-    {
-        get { return this.isOver; }
-        private set { this.isOver = value; }
-    }
+    public static bool isOver = false;
 
     private PlayableDirector director;
     
@@ -23,6 +17,6 @@ public class StartCutFlag : MonoBehaviour
 
     private void Director_Stopped(PlayableDirector obj)
     {
-        this.IsOver = true;
+        isOver = true;
     }
 }
