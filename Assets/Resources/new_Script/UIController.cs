@@ -30,7 +30,10 @@ public class UIController : MonoBehaviour
     private bool MeasuringStarted = false;
 
     //フェードインフェードアウトのスピード
-    private float fadeSpeed = 0.002f;
+    private float fadeSpeed = 0.004f;
+
+    //フェードアウト判定
+    public static bool isFaded = false;
 
     //ゲームオーバー判定
     private bool isGameOver = false;
@@ -103,6 +106,7 @@ public class UIController : MonoBehaviour
 
         if (alpha >= 1)
         {
+            isFaded = true;
             second += Time.deltaTime;
 
             if (second >= 1)

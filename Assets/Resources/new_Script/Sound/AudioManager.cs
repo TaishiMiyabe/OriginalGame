@@ -130,18 +130,6 @@ public class AudioManager : SingletonMonoBehaviour<AudioManager>
         PlayBGM(GetBgmIndex(name));
     }
 
-    public void PlayBGM_spatial(int index)
-    {
-        PlayBGM(index);
-        bgmAudioSource.spatialize = true;
-        bgmAudioSource.spatialBlend = 1.0f;
-    }
-
-    public void PlayBGMByName_spatial(string name)
-    {
-        PlayBGM_spatial(GetBgmIndex(name));
-    }
-
     public void StopBGM()
     {
         bgmAudioSource.Stop();
