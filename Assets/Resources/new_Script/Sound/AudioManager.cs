@@ -1,6 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
+using UnityEngine.Audio;
 
 public class AudioManager : SingletonMonoBehaviour<AudioManager>
 {
@@ -19,6 +22,27 @@ public class AudioManager : SingletonMonoBehaviour<AudioManager>
 
     AudioSource bgmAudioSource;
     AudioSource seAudioSource;
+
+    //SE連続再生ループON/OFF用フラグ
+    private bool SEPlayOK = false;
+
+    public class _Info
+    {
+        //クリップの名前
+        public string Name;
+        //再生済みかどうかのフラグ
+        public bool IsDone;
+        //再生候補になってからの経過フレーム数
+        public int FrameCount;
+        //再生する音
+        public AudioClip Clip;
+    }
+
+    [SerializeField, Range(1, 10)] private int delayFrameCount = 2;
+    [SerializeField, Range(1, 32)] private int maxQueuedItemCount = 2;
+
+    //管理中のクリップ
+    private readonly Dictionary<string, Queue<_Info>> table = new Dictionary<string, Queue<_Info>>();
 
     public float Volume
     {
@@ -87,6 +111,57 @@ public class AudioManager : SingletonMonoBehaviour<AudioManager>
             seIndex.Add(se[i].name, i);
         }
     }
+
+    //SEの複数再生に関してのUpdate
+    public void Update()
+    {
+        if (this.SEPlayOK) 
+        {
+            foreach (var q in this.table.Values)
+            {
+                if (q.Count == 0)
+                {
+                    continue;
+                }
+
+                while (true)
+                {
+                    if (q.Count == 0)
+                    {
+                        break;
+                    }
+
+                    if (q.Peek().IsDone)
+                    {
+                        var _ = q.Dequeue();
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+
+                if (q.Count == 0)
+                {
+                    continue;
+                }
+                //未再生でキューの先頭の1件に対して
+                var info = q.Peek();
+                info.FrameCount++;
+                if (info.FrameCount > this.delayFrameCount)
+                {
+                    this.seAudioSource.PlayOneShot(info.Clip, SeVolume * Volume);
+                    var _ = q.Dequeue();
+                }
+            }
+
+            if (this.count == 0)
+            {
+                this.table.Clear();
+                this.SEPlayOK = false;
+            } 
+        }
+    }
     #region ファイル名からインデックス番号を検索する
     public int GetBgmIndex(string name)
     {
@@ -140,9 +215,37 @@ public class AudioManager : SingletonMonoBehaviour<AudioManager>
     #region SE再生・ストップ
     public void PlaySE(int index)
     {
+        var pair = seIndex.FirstOrDefault(c => c.Value == index);
+        var SEname = pair.Key;
+
+        this.SEPlayOK = true;
         index = Mathf.Clamp(index, 0, se.Length);
 
-        seAudioSource.PlayOneShot(se[index], SeVolume * Volume);
+        var info = new _Info() { FrameCount = 0, Clip = se[index] };
+
+        if (!this.table.ContainsKey(SEname))
+        {
+            this.seAudioSource.PlayOneShot(se[index]);
+            info.IsDone = true;//再生済み⇒キューの順番が来たら破棄される。
+
+            var q = new Queue<_Info>();
+            q.Enqueue(info);
+            this.table[SEname] = q;
+        }
+        else
+        {
+            var list = this.table[SEname];//該当SEnameのキューを持ってきて
+            if(list.Count <= this.maxQueuedItemCount)//max以下のキューの数ならば追加
+            {
+                this.table[SEname].Enqueue(info);
+            }
+            else//max超えたキュー登録はしない
+            {
+                Debug.Log($"効果音の最大登録数を越えました。SE名={SEname}");
+            }
+        }
+
+        //seAudioSource.PlayOneShot(se[index], SeVolume * Volume);
     }
 
     public void PlaySEByName(string name)
@@ -156,4 +259,18 @@ public class AudioManager : SingletonMonoBehaviour<AudioManager>
         seAudioSource.clip = null;
     }
     #endregion
+
+    //有効なSE要素数を取得
+    private int count
+    {
+        get
+        {
+            int num = 0;
+            foreach(var list in this.table.Values)
+            {
+                num += list.Count;
+            }
+            return num;
+        }
+    }
 }
