@@ -39,7 +39,7 @@ public class AudioManager : SingletonMonoBehaviour<AudioManager>
     }
 
     [SerializeField, Range(1, 10)] private int delayFrameCount = 2;
-    [SerializeField, Range(1, 32)] private int maxQueuedItemCount = 2;
+    [SerializeField, Range(0, 32)] private int maxQueuedItemCount;
 
     //管理中のクリップ
     private readonly Dictionary<string, Queue<_Info>> table = new Dictionary<string, Queue<_Info>>();
@@ -150,6 +150,7 @@ public class AudioManager : SingletonMonoBehaviour<AudioManager>
                 info.FrameCount++;
                 if (info.FrameCount > this.delayFrameCount)
                 {
+                    Debug.Log("aa");
                     this.seAudioSource.PlayOneShot(info.Clip, SeVolume * Volume);
                     var _ = q.Dequeue();
                 }
@@ -225,6 +226,7 @@ public class AudioManager : SingletonMonoBehaviour<AudioManager>
 
         if (!this.table.ContainsKey(SEname))
         {
+            Debug.Log("a");
             this.seAudioSource.PlayOneShot(se[index]);
             info.IsDone = true;//再生済み⇒キューの順番が来たら破棄される。
 
@@ -235,7 +237,7 @@ public class AudioManager : SingletonMonoBehaviour<AudioManager>
         else
         {
             var list = this.table[SEname];//該当SEnameのキューを持ってきて
-            if(list.Count <= this.maxQueuedItemCount)//max以下のキューの数ならば追加
+            if(list.Count < this.maxQueuedItemCount)//max以下のキューの数ならば追加
             {
                 this.table[SEname].Enqueue(info);
             }

@@ -25,4 +25,9 @@ public class titleScript : MonoBehaviour
         isSwitched = true;
         SceneManager.LoadScene("SampleScene");
     }
+
+    public void GetConfigButton()
+    {
+        SceneManager.LoadScene("Config");
+    }
 }
