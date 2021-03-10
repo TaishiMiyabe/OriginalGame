@@ -699,7 +699,7 @@ MonoBehaviour:
       m_PersistentCalls:
         m_Calls:
         - m_Target: {fileID: 1676066427}
-          m_MethodName: GetReturnButton
+          m_MethodName: GetReturnToStartButton
           m_Mode: 1
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
@@ -1758,7 +1758,7 @@ GameObject:
   - component: {fileID: 1676066428}
   - component: {fileID: 1676066427}
   m_Layer: 0
-  m_Name: SceneController
+  m_Name: ConfigSceneController
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1773,7 +1773,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1676066426}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2762d4bdd65bfb44d9e31d4a00764b7a, type: 3}
+  m_Script: {fileID: 11500000, guid: f0bd5c5b2f4af234ab6fec6a983f8b38, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!4 &1676066428
