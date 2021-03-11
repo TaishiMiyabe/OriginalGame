@@ -14365,7 +14365,6 @@ GameObject:
   - component: {fileID: 8975091050594512691}
   - component: {fileID: 3324977879675600744}
   - component: {fileID: 5684961557694524090}
-  - component: {fileID: -5004930134209430576}
   m_Layer: 0
   m_Name: SmallTruckPrefab
   m_TagString: Untagged
@@ -14490,17 +14489,5 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: eb0c9ef0901254b459bfc9d822ea1fec, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &-5004930134209430576
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7996245267106007598}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 35ec9675a42efc14494968eba188dc6e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 

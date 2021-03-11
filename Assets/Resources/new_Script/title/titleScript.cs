@@ -7,10 +7,14 @@ public class titleScript : MonoBehaviour
 {
     public static bool isSwitched = false;
 
+    AudioManager audiomanager;
+
     // Start is called before the first frame update
     void Start()
     {
-        DontDestroyOnLoad(this);
+        //DontDestroyOnLoad(this);
+
+        audiomanager = AudioManager.Instance;
     }
 
     // Update is called once per frame
@@ -23,11 +27,13 @@ public class titleScript : MonoBehaviour
     public void GetStartButton()
     {
         isSwitched = true;
+        audiomanager.PlaySEByName("ButtonSE");
         SceneManager.LoadScene("SampleScene");
     }
 
     public void GetConfigButton()
     {
+        audiomanager.PlaySEByName("ButtonSE");
         SceneManager.LoadScene("Config");
     }
 }

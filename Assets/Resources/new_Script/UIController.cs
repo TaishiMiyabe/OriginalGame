@@ -10,6 +10,8 @@ public class UIController : MonoBehaviour
     private float score_display = 0;
     private float scoreDisplaySpeed = 200f;
 
+    AudioManager audiomanager;
+
     //ゲームオーバー時のフェードインパネルに関する部分
     private GameObject gameoverPanel;
     private float red, green, blue;
@@ -43,6 +45,10 @@ public class UIController : MonoBehaviour
         private set { this.isGameOver = value; }//入力用
     }
 
+    //スコア表示終了判定とボタン表示終了判定
+    private bool Scored = false;
+    private bool Buttoned = false;
+
 
     // Start is called before the first frame update
     void Start()
@@ -68,6 +74,7 @@ public class UIController : MonoBehaviour
         this.returnButton = GameObject.Find("ToStartGamenButton");
         returnButton.SetActive(false);
 
+        audiomanager = AudioManager.Instance;
     }
 
     // Update is called once per frame
@@ -131,6 +138,11 @@ public class UIController : MonoBehaviour
 
                     isGameOver = true;
 
+                    if (!Scored)
+                    {
+                        audiomanager.PlaySEByName("ScoreSE");
+                        Scored = true;
+                    }
                     StartCoroutine("ActivateButton");
 
                 }
@@ -144,6 +156,11 @@ public class UIController : MonoBehaviour
     {
         yield return new WaitForSeconds(1.5f);
 
+        if (!Buttoned)
+        {
+            audiomanager.PlaySEByName("ScoreSE");
+            Buttoned = true;
+        }
         retryButton.SetActive(true);
         returnButton.SetActive(true);
     }

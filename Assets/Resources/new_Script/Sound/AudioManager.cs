@@ -93,7 +93,7 @@ public class AudioManager : SingletonMonoBehaviour<AudioManager>
             return;
         }
         //シーンが遷移しても破棄しない
-        DontDestroyOnLoad(gameObject);
+        DontDestroyOnLoad(gameObject);//シーンをまたぐと壊れるシングルトンor壊れないsingleton 
 
         //AudioSourceの自動アタッチ
         bgmAudioSource = gameObject.AddComponent<AudioSource>();
@@ -226,8 +226,7 @@ public class AudioManager : SingletonMonoBehaviour<AudioManager>
 
         if (!this.table.ContainsKey(SEname))
         {
-            Debug.Log("a");
-            this.seAudioSource.PlayOneShot(se[index]);
+            this.seAudioSource.PlayOneShot(se[index], SeVolume * Volume);
             info.IsDone = true;//再生済み⇒キューの順番が来たら破棄される。
 
             var q = new Queue<_Info>();

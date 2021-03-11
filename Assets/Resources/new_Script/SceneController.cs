@@ -9,10 +9,14 @@ public class SceneController : MonoBehaviour
 
     UIController uiclass;
 
+    AudioManager audiomanager;
+
     // Start is called before the first frame update
     void Start()
     {
         uiclass = GameObject.Find("UIController").GetComponent<UIController>();
+
+        audiomanager = AudioManager.Instance;
     }
 
     // Update is called once per frame
@@ -23,12 +27,17 @@ public class SceneController : MonoBehaviour
 
     public void GetRetryButton()
     {
+        StartCutFlag.isOver = false;
+        audiomanager.PlaySEByName("ButtonSE");
         SceneManager.LoadScene("SampleScene");
     }
 
     public void GetReturnButton()
     {
+        StartCutFlag.isOver = false;
         titleScript.isSwitched = false;
+        Debug.Log(audiomanager.Volume);
+        audiomanager.PlaySEByName("ButtonSE");
         SceneManager.LoadScene("title");
     }
 }
