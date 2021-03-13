@@ -1053,7 +1053,7 @@ MonoBehaviour:
   morning: {fileID: 2100000, guid: 01f4eb1c73693428d923f1520032e7f9, type: 2}
   evening_early: {fileID: 2100000, guid: 7416536dbe0334cfd888dd1beb75a9fb, type: 2}
   evening_late: {fileID: 2100000, guid: c82a334cf5a5e47978749c210cee72a7, type: 2}
-  night: {fileID: 2100000, guid: 9af23ba5fa5364ff598888460e0e2759, type: 2}
+  night: {fileID: 2100000, guid: eac2ef371405749e0bd050b4c3272f16, type: 2}
 --- !u!4 &1405791877
 Transform:
   m_ObjectHideFlags: 0

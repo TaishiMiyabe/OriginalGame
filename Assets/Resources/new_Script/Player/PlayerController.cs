@@ -10,6 +10,8 @@ public class PlayerController : MonoBehaviour
 
     private float secondsFromCollided;
 
+    AudioManager audio;
+
     //プレイヤーの速度(通常)
     private float velocityZ_normal = 20f;
     private float velocityX = 0;
@@ -25,7 +27,7 @@ public class PlayerController : MonoBehaviour
     //プレイヤーへの追加速度(横方向)
     private float velocityX_move = 30f;
     //プレイヤーへの追加速度(上方向)
-    private float velocityY_move = 30f;
+    private float velocityY_move = 25f;
     //左右へ移動するかどうかの判定用
     private bool goLeft = false;
     private bool goRight = false;
@@ -62,6 +64,8 @@ public class PlayerController : MonoBehaviour
         this.playerRigidbody = GetComponent<Rigidbody>();
 
         playerPos = CENTER;
+
+        audio = AudioManager.Instance;
     }
 
     // Update is called once per frame
@@ -212,21 +216,21 @@ public class PlayerController : MonoBehaviour
                 this.transform.position = new Vector3(movablePos_left, this.transform.position.y, this.transform.position.z);
             }
             //着地した時
-            if (playerPos == LEFTAIR && isGrounded)
+            if (playerPos == LEFTAIR && isGrounded && this.transform.position.y < 0.1f)
             {
                 playerPos = LEFT;
             }
-            if (playerPos == CENTERAIR && isGrounded)
+            if (playerPos == CENTERAIR && isGrounded && this.transform.position.y < 0.1f)
             {
                 playerPos = CENTER;
             }
-            if (playerPos == RIGHTAIR && isGrounded)
+            if (playerPos == RIGHTAIR && isGrounded && this.transform.position.y < 0.1f)
             {
                 playerPos = RIGHT;
             }
             #endregion
 
-            if (!isGrounded && (this.transform.position.y >= 0.3))
+            if (!isGrounded && (this.transform.position.y >= 0.3) && (playerPos == LEFT || playerPos == RIGHT || playerPos == CENTER))
             {
                 this.playerAnimator.SetBool("isJumped", true);
             }
@@ -245,9 +249,9 @@ public class PlayerController : MonoBehaviour
         
         isGrounded = CheckGrounded();
 
-        if (isGrounded)
+        if (isGrounded && (playerPos == LEFT || playerPos == CENTER || playerPos == RIGHT))
         {
-            velocityY = -1;
+            velocityY = -1f;
             this.playerAnimator.SetBool("isFallen", false);
         }
         
@@ -299,9 +303,31 @@ public class PlayerController : MonoBehaviour
 
     void OnCollisionEnter(Collision other)
     {
-        if (other.gameObject.tag !="Road")
+        if (other.gameObject.tag =="Truck" || other.gameObject.tag == "ThrowedShip" )
         {
             isCollided = true; 
+        }
+
+    }
+
+    void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.tag == "CupperSingleCoin")
+        {
+            audio.PlaySEByName("coin_01");
+            Destroy(other.gameObject);
+        }
+
+        if (other.gameObject.tag == "SilverSingleCoin")
+        {
+            audio.PlaySEByName("coin_01");
+            Destroy(other.gameObject);
+        }
+
+        if (other.gameObject.tag == "GoldSingleCoin")
+        {
+            audio.PlaySEByName("coin_01");
+            Destroy(other.gameObject);
         }
     }
 

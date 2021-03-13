@@ -7,6 +7,12 @@ public class RoadGenerator : MonoBehaviour
 
     [SerializeField] GameObject[] objList_right;
     [SerializeField] GameObject[] objList_left;
+    [SerializeField] GameObject[] itemList;
+
+    private float leftPos = -11f;
+    private float centerPos = -6f;
+    private float rightPos = -1f;
+    private float[] xPosList = new float[] {-11f, -6f, -1f};
 
     public GameObject standardRoadPrefab;
     
@@ -19,6 +25,7 @@ public class RoadGenerator : MonoBehaviour
 
     private Vector3 stagePosition_right;
     private Vector3 stagePosition_left;
+    private Vector3 itemPosition;
     //サイド部分に時々できるスペース幅
     private Vector3 sideSpace = new Vector3(10, 0, 0);
 
@@ -36,6 +43,9 @@ public class RoadGenerator : MonoBehaviour
 
     //startLineからどの程度手前で新たに道生成をかけるか
     private float playerPos_fromstartLine = 150;
+
+    //アイテム生成はスタートカットシーンが終わってから
+    private Vector3 itemGenerateLine = new Vector3(0, 0, 250f); //x,y は何でもいい
 
     // Start is called before the first frame update
     void Start()
@@ -69,6 +79,7 @@ public class RoadGenerator : MonoBehaviour
         {
             RoadGenerate(startLine, endLine);
             setBuildings();
+            setItems();
             startLine = endLine;
             endLine = endLine + generateWidth;
         }
@@ -179,5 +190,24 @@ public class RoadGenerator : MonoBehaviour
                 stagePosition_left += sideSpace;
             }
         }
+    }
+
+    private void setItems()
+    {
+
+        for (int i = 0; i < 50; i++) {
+            var num = Random.Range(0, itemList.Length);
+            GameObject item = Instantiate(itemList[num]);
+            int k = Random.Range(0, xPosList.Length);
+            item.transform.position = new Vector3(xPosList[k], item.transform.position.y, itemGenerateLine.z);
+            itemGenerateLine += item.GetComponent<PrefabSize>().size;
+
+            if(itemPosition.z > endLine)
+            {
+                itemGenerateLine -= item.GetComponent<PrefabSize>().size;
+                Destroy(item);
+                break;
+            }
+        } 
     }
 }
