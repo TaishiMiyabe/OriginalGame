@@ -14,7 +14,7 @@ public class FallSound : MonoBehaviour
 
         audiomanager = AudioManager.Instance;
 
-        volume = audiomanager.SeVolume;
+        volume = audiomanager.SeVolume * audiomanager.Volume;
 
         GetComponent<AudioSource>().volume = volume;
 
