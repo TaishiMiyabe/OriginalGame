@@ -18,6 +18,8 @@ public class FallSound : MonoBehaviour
 
         GetComponent<AudioSource>().volume = volume;
 
+        GetComponent<AudioSource>().Play();
+
     }
 
     // Update is called once per frame
