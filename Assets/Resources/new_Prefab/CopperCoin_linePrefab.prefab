@@ -1812,6 +1812,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7792858906355672132}
   - component: {fileID: 2464210440403062964}
+  - component: {fileID: 7198258612804324684}
   m_Layer: 0
   m_Name: CopperCoin_linePrefab
   m_TagString: CupperSingleCoin
@@ -1866,6 +1867,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   size: {x: 0, y: 0, z: 22}
+--- !u!114 &7198258612804324684
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7792858906355672139}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 495518267d5a12943a03f2a4155708a5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7792858906582446038
 GameObject:
   m_ObjectHideFlags: 0

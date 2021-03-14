@@ -9,12 +9,12 @@ public class FallSound : MonoBehaviour
     float volume;
 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
 
         audiomanager = AudioManager.Instance;
 
-        volume = audiomanager.Volume;
+        volume = audiomanager.SeVolume;
 
         GetComponent<AudioSource>().volume = volume;
 
