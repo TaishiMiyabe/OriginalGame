@@ -10,10 +10,14 @@ public class DamagedController : MonoBehaviour
 
     private GameObject child;
 
+    private Animator playerAnimator;
+
     // Start is called before the first frame update
     void Start()
     {
        child =transform.Find("Stickman_heads_sphere_child").gameObject;
+
+        this.playerAnimator = GetComponent<Animator>();
     }
 
     // Update is called once per frame
@@ -29,11 +33,15 @@ public class DamagedController : MonoBehaviour
 
             secondFromDamaged += Time.deltaTime;
 
+            this.playerAnimator.SetFloat("RunSpeed", 0.25f);
+
             if (secondFromDamaged >= 2)
             {
                 isDamaged = false;
                 color.a = 1;
                 child.GetComponent<SkinnedMeshRenderer>().material.color = color;
+
+                this.playerAnimator.SetFloat("RunSpeed", 1f);
 
                 secondFromDamaged = 0;
             }

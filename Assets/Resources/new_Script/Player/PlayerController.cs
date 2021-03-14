@@ -314,21 +314,42 @@ public class PlayerController : MonoBehaviour
     {
         if (other.gameObject.tag == "CupperSingleCoin")
         {
+            itemScore.score += 10;
             audio.PlaySEByName("coin_01");
             Destroy(other.gameObject);
         }
 
         if (other.gameObject.tag == "SilverSingleCoin")
         {
+            itemScore.score += 50;
             audio.PlaySEByName("coin_01");
             Destroy(other.gameObject);
         }
 
         if (other.gameObject.tag == "GoldSingleCoin")
         {
+            itemScore.score += 100;
             audio.PlaySEByName("coin_01");
             Destroy(other.gameObject);
         }
+
+        //if (other.gameObject.tag == "CupperCoins")
+        //{
+        //    audio.PlaySEByName("coin_01_multi");
+        //    Destroy(other.gameObject);
+        //}
+
+        //if (other.gameObject.tag == "SilverCoins")
+        //{
+        //    audio.PlaySEByName("coin_01_multi");
+        //    Destroy(other.gameObject);
+        //}
+
+        //if (other.gameObject.tag == "GoldCoins")
+        //{
+        //    audio.PlaySEByName("coin_01_multi");
+        //    Destroy(other.gameObject);
+        //}
     }
 
     //地面と接地しているかの判定

@@ -2024,6 +2024,7 @@ GameObject:
   m_Component:
   - component: {fileID: 9181392214902673876}
   - component: {fileID: 3566202360165737764}
+  - component: {fileID: 2534696154438122639}
   m_Layer: 0
   m_Name: SilverCoin_curve
   m_TagString: SilverSingleCoin
@@ -2077,7 +2078,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76a2e68853ce5b74b94cc4c01c8bccec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  size: {x: 0, y: 0, z: 20}
+  size: {x: 0, y: 0, z: 22}
+--- !u!114 &2534696154438122639
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9181392214902673883}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 495518267d5a12943a03f2a4155708a5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &9181392216433739498
 GameObject:
   m_ObjectHideFlags: 0

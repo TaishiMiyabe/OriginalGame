@@ -646,8 +646,9 @@ GameObject:
   m_Component:
   - component: {fileID: 1028706017183250994}
   - component: {fileID: 4634726396233158338}
+  - component: {fileID: 7749486589540915220}
   m_Layer: 0
-  m_Name: GoldCoin_curve
+  m_Name: GoldCoin_curvePrefab
   m_TagString: GoldSingleCoin
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -699,7 +700,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76a2e68853ce5b74b94cc4c01c8bccec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  size: {x: 0, y: 0, z: 20}
+  size: {x: 0, y: 0, z: 22}
+--- !u!114 &7749486589540915220
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1028706017183251005}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 495518267d5a12943a03f2a4155708a5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1028706018590059788
 GameObject:
   m_ObjectHideFlags: 0

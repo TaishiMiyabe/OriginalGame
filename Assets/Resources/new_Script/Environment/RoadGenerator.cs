@@ -8,6 +8,7 @@ public class RoadGenerator : MonoBehaviour
     [SerializeField] GameObject[] objList_right;
     [SerializeField] GameObject[] objList_left;
     [SerializeField] GameObject[] itemList;
+    [SerializeField] GameObject[] coinsList;
 
     private float leftPos = -11f;
     private float centerPos = -6f;
@@ -46,6 +47,7 @@ public class RoadGenerator : MonoBehaviour
 
     //アイテム生成はスタートカットシーンが終わってから
     private Vector3 itemGenerateLine = new Vector3(0, 0, 250f); //x,y は何でもいい
+    private int itemGenerateCount = 0;//itemGenerate実行回数
 
     // Start is called before the first frame update
     void Start()
@@ -192,22 +194,69 @@ public class RoadGenerator : MonoBehaviour
         }
     }
 
-    private void setItems()
+    private void setItems()//いったんコインの山は無し
     {
-
+        int length_min;
+        int length_max;
+        //var distance = PlayerDistance.playerdistance;
+        //距離ごとに出てくるコインのグレードを上げる。
+        if (itemGenerateCount == 0)
+        {
+            length_min = itemList.Length - 6;
+            length_max = itemList.Length -4;
+        }
+        else if (itemGenerateCount == 1)
+        {
+            length_min = itemList.Length - 6;
+            length_max = itemList.Length -2;
+        }
+        else if (itemGenerateCount == 2)
+        {
+            length_min = itemList.Length - 4;
+            length_max = itemList.Length - 2;
+        }
+        else if (itemGenerateCount == 3)
+        {
+            length_min = itemList.Length - 4;
+            length_max = itemList.Length;
+        }
+        else
+        {
+            length_min = itemList.Length -2;
+            length_max = itemList.Length;
+        }
         for (int i = 0; i < 50; i++) {
-            var num = Random.Range(0, itemList.Length);
+           
+            var num = Random.Range(length_min, length_max);
+            Debug.Log(num);
+            Debug.Log(PlayerDistance.playerdistance);
+            //var num2 = Random.Range(0, coinsList.Length);//コインの山
             GameObject item = Instantiate(itemList[num]);
+            //GameObject coins = Instantiate(coinsList[num2]);
             int k = Random.Range(0, xPosList.Length);
+            //int m;
+            //while (true)
+            //{
+            //    k = Random.Range(0, xPosList.Length);
+            //    m = Random.Range(0, xPosList.Length);
+            //    if(k != m)
+            //    {
+            //        break;
+            //    }
+            //}
             item.transform.position = new Vector3(xPosList[k], item.transform.position.y, itemGenerateLine.z);
+            //coins.transform.position = new Vector3(xPosList[m], coins.transform.position.y, itemGenerateLine.z + 10);
             itemGenerateLine += item.GetComponent<PrefabSize>().size;
 
-            if(itemPosition.z > endLine)
+            if(itemGenerateLine.z > endLine)
             {
                 itemGenerateLine -= item.GetComponent<PrefabSize>().size;
                 Destroy(item);
+                //Destroy(coins);
                 break;
             }
-        } 
+        }
+
+        itemGenerateCount += 1;
     }
 }

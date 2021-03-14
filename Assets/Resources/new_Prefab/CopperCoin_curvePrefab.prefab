@@ -1282,8 +1282,9 @@ GameObject:
   m_Component:
   - component: {fileID: 6592932541168910025}
   - component: {fileID: 1542945228865227321}
+  - component: {fileID: 9169250584061281171}
   m_Layer: 0
-  m_Name: CopperCoin_curve
+  m_Name: CopperCoin_curvePrefab
   m_TagString: CupperSingleCoin
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1335,7 +1336,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76a2e68853ce5b74b94cc4c01c8bccec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  size: {x: 0, y: 0, z: 20}
+  size: {x: 0, y: 0, z: 22}
+--- !u!114 &9169250584061281171
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6592932541168910022}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 495518267d5a12943a03f2a4155708a5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &6592932541395121499
 GameObject:
   m_ObjectHideFlags: 0

@@ -8,7 +8,9 @@ public class UIController : MonoBehaviour
     private GameObject player;
     private int distance;
     private float score_display = 0;
-    private float scoreDisplaySpeed = 200f;
+    private float scoreDisplaySpeed = 4000f;
+    private float itemscore_display = 0;
+    private float totalscore_display = 0;
 
     AudioManager audiomanager;
 
@@ -20,7 +22,10 @@ public class UIController : MonoBehaviour
     private GameObject gameoverScoreText_1;
     private GameObject gameoverScoreText_2;
     private GameObject gameoverScoreText_3;
+    private GameObject gameoverScoreText_4;
+    private GameObject gameoverScoreText_5;
     private GameObject distanceText;
+    private GameObject itemScoreText;
     private GameObject retryButton;
     private GameObject returnButton;
     private GameObject startButton;
@@ -60,9 +65,13 @@ public class UIController : MonoBehaviour
         this.gameoverScoreText_1 = GameObject.Find("GameOverScoreText_1");
         this.gameoverScoreText_2 = GameObject.Find("GameOverScoreText_2");
         this.gameoverScoreText_3 = GameObject.Find("GameOverScoreText_3");
+        this.gameoverScoreText_4 = GameObject.Find("GameOverScoreText_4");
+        this.gameoverScoreText_5 = GameObject.Find("GameOverScoreText_5");
         this.distanceText = GameObject.Find("DistanceText");
+        this.itemScoreText = GameObject.Find("ItemScoreText");
 
         distanceText.SetActive(false);
+        itemScoreText.SetActive(false);
 
         //開始ボタン
         this.startButton = GameObject.Find("StartButton");
@@ -83,6 +92,7 @@ public class UIController : MonoBehaviour
         if (StartCutFlag.isOver)
         {
             DistanceDisplay();
+            ItemScoreDisplay();
         }
 
         if (this.player.transform.position.y <= -20)
@@ -101,9 +111,18 @@ public class UIController : MonoBehaviour
 
         distanceText.SetActive(true);
 
-        distance = (int)Mathf.Floor(this.player.transform.position.z - playerStartLine);
+        distance = (int)Mathf.Floor(this.player.transform.position.z - playerStartLine) * 10;
+
+        PlayerDistance.playerdistance = distance;//staticのところに入れておく。
 
         this.distanceText.GetComponent<Text>().text = $"{distance}m";
+    }
+
+    void ItemScoreDisplay()
+    {
+        itemScoreText.SetActive(true);
+
+        this.itemScoreText.GetComponent<Text>().text = $"{itemScore.score}";
     }
 
     void GameOverDisplay()
@@ -123,7 +142,8 @@ public class UIController : MonoBehaviour
 
             if (second >= 1.5)
             {
-                this.gameoverScoreText_2.GetComponent<Text>().text = "DISTANCE";
+                this.gameoverScoreText_2.GetComponent<Text>().text = "DISTANCE: ";
+                this.gameoverScoreText_3.GetComponent<Text>().text = "SCORE: ";
             }
 
             if (second >= 2)
@@ -131,11 +151,23 @@ public class UIController : MonoBehaviour
                 if (score_display <= distance)
                 {
                     score_display += scoreDisplaySpeed * Time.deltaTime;
+                    
                 }
-                else
+                if(itemscore_display <= itemScore.score)
                 {
-                    //スコア表示が終わったらゲームオーバーフラグを立てる。
+                    itemscore_display += scoreDisplaySpeed * Time.deltaTime;
+                    
+                }
+                score_display = Mathf.Floor(score_display);
+                itemscore_display = Mathf.Floor(itemscore_display);
+                this.gameoverScoreText_2.GetComponent<Text>().text = $"DISTANCE: {score_display}";
+                this.gameoverScoreText_3.GetComponent<Text>().text = $"SCORE: {itemscore_display}";
 
+                if (distance < score_display && itemScore.score < itemscore_display)
+                {
+                    totalscore_display = score_display + itemscore_display;
+                    StartCoroutine("TotalScoreDisplay");
+                    //スコア表示が終わったらゲームオーバーフラグを立てる。
                     isGameOver = true;
 
                     if (!Scored)
@@ -146,15 +178,24 @@ public class UIController : MonoBehaviour
                     StartCoroutine("ActivateButton");
 
                 }
-                this.gameoverScoreText_3.GetComponent<Text>().text = $"{Mathf.Floor(score_display)}pt";
+                //this.gameoverScoreText_3.GetComponent<Text>().text = $"{Mathf.Floor(score_display)}pt";
 
             }
         }
     }
 
-    IEnumerator ActivateButton()
+    IEnumerator TotalScoreDisplay()
     {
         yield return new WaitForSeconds(1.5f);
+
+        this.gameoverScoreText_4.GetComponent<Text>().text = "TOTAL SCORE";
+        this.gameoverScoreText_5.GetComponent<Text>().text = $"{totalscore_display}";
+
+    }
+
+    IEnumerator ActivateButton()
+    {
+        yield return new WaitForSeconds(3.0f);
 
         if (!Buttoned)
         {
