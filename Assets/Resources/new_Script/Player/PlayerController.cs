@@ -373,9 +373,10 @@ public class PlayerController : MonoBehaviour
         if(touch.phase == TouchPhase.Ended)
         {
             touchEndPos = touch.position;
+            GetFlickDirection(touchStartPos, touchEndPos);
         }
 
-        GetFlickDirection(touchStartPos, touchEndPos);
+        //GetFlickDirection(touchStartPos, touchEndPos);
     }
 
     //フリックされている方向を決める為のメソッド
