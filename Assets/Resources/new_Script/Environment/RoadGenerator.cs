@@ -226,10 +226,8 @@ public class RoadGenerator : MonoBehaviour
             length_max = itemList.Length;
         }
         for (int i = 0; i < 50; i++) {
-           
+
             var num = Random.Range(length_min, length_max);
-            Debug.Log(num);
-            Debug.Log(PlayerDistance.playerdistance);
             //var num2 = Random.Range(0, coinsList.Length);//コインの山
             GameObject item = Instantiate(itemList[num]);
             //GameObject coins = Instantiate(coinsList[num2]);

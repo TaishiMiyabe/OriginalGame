@@ -150,7 +150,6 @@ public class AudioManager : SingletonMonoBehaviour<AudioManager>
                 info.FrameCount++;
                 if (info.FrameCount > this.delayFrameCount)
                 {
-                    Debug.Log("aa");
                     this.seAudioSource.PlayOneShot(info.Clip, SeVolume * Volume);
                     var _ = q.Dequeue();
                 }

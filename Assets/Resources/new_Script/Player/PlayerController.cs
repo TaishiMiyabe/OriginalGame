@@ -53,7 +53,7 @@ public class PlayerController : MonoBehaviour
     private Vector3 touchStartPos;
     private Vector3 touchEndPos;
     //フリック方向
-    private string flickDirection;
+    private string flickDirection = "default";
 
 
     // Start is called before the first frame update
@@ -73,6 +73,7 @@ public class PlayerController : MonoBehaviour
     {
         if (StartCutFlag.isOver)
         {
+            Debug.Log(playerPos);
             //何も操作されていないときは0
             velocityX = 0;
 
@@ -81,8 +82,10 @@ public class PlayerController : MonoBehaviour
                 Touch touch = Input.GetTouch(0);
 
                 //どういうフリックがされたかを設定
-                Flick(touch);
-
+                if (!goUp && !goRight && !goLeft)
+                {
+                    Flick(touch);
+                }
                 //フリックに応じたアクション
                 switch (flickDirection)
                 {
@@ -90,6 +93,7 @@ public class PlayerController : MonoBehaviour
                         if (playerPos != RIGHTAIR && playerPos != RIGHT && !goLeft && !goUp /*&& (playerPos != LEFTAIR && playerPos != CENTERAIR && playerPos != RIGHTAIR)*/)
                         {
                             goRight = true;
+                            Debug.Log("switch right");
                         }
                         break;
 
@@ -97,6 +101,7 @@ public class PlayerController : MonoBehaviour
                         if (playerPos != LEFTAIR && playerPos != LEFT && !goRight && !goUp /*&& (playerPos != LEFTAIR && playerPos != CENTERAIR && playerPos != RIGHTAIR)*/)
                         {
                             goLeft = true;
+                            Debug.Log("switch left");
                         }
                         break;
 
@@ -104,7 +109,11 @@ public class PlayerController : MonoBehaviour
                         if (!goLeft && !goRight && (playerPos != LEFTAIR && playerPos != CENTERAIR && playerPos != RIGHTAIR))
                         {
                             goUp = true;
+                            Debug.Log("switch up");
                         }
+                        break;
+
+                    default:
                         break;
                 }
             }
@@ -129,6 +138,7 @@ public class PlayerController : MonoBehaviour
             if (goRight && (playerPos == LEFT) && (this.transform.position.x >= XPos_start))
             {
                 goRight = false;
+                flickDirection = "default";
                 playerPos = CENTER;
 
                 //位置調整？
@@ -141,6 +151,7 @@ public class PlayerController : MonoBehaviour
             if (goRight && (playerPos == CENTER) && (this.transform.position.x >= movablePos_right))
             {
                 goRight = false;
+                flickDirection = "default";
                 playerPos = RIGHT;
 
                 //位置調整？
@@ -150,6 +161,7 @@ public class PlayerController : MonoBehaviour
             if (goLeft && (playerPos == RIGHT) && (this.transform.position.x <= XPos_start))
             {
                 goLeft = false;
+                flickDirection = "default";
                 playerPos = CENTER;
 
                 //位置調整？
@@ -159,6 +171,7 @@ public class PlayerController : MonoBehaviour
             if (goLeft && (playerPos == CENTER) && (this.transform.position.x <= movablePos_left))
             {
                 goLeft = false;
+                flickDirection = "default";
                 playerPos = LEFT;
 
                 this.transform.position = new Vector3(movablePos_left, this.transform.position.y, this.transform.position.z);
@@ -167,22 +180,26 @@ public class PlayerController : MonoBehaviour
             if (goUp && playerPos == LEFT && (this.transform.position.y >= movablePos_up))
             {
                 goUp = false;
+                flickDirection = "default";
                 playerPos = LEFTAIR;
             }
             if (goUp && playerPos == CENTER && (this.transform.position.y >= movablePos_up))
             {
                 goUp = false;
+                flickDirection = "default";
                 playerPos = CENTERAIR;
             }
             if (goUp && playerPos == RIGHT && (this.transform.position.y >= movablePos_up))
             {
                 goUp = false;
+                flickDirection = "default";
                 playerPos = RIGHTAIR;
             }
             //右方向に移動している＆左上から移動している＆真ん中に達した場合
             if (goRight && (playerPos == LEFTAIR) && (this.transform.position.x >= XPos_start))
             {
                 goRight = false;
+                flickDirection = "default";
                 playerPos = CENTERAIR;
 
                 //位置調整？
@@ -192,6 +209,7 @@ public class PlayerController : MonoBehaviour
             if (goRight && (playerPos == CENTERAIR) && (this.transform.position.x >= movablePos_right))
             {
                 goRight = false;
+                flickDirection = "default";
                 playerPos = RIGHTAIR;
 
                 //位置調整？
@@ -201,6 +219,7 @@ public class PlayerController : MonoBehaviour
             if (goLeft && (playerPos == RIGHTAIR) && (this.transform.position.x <= XPos_start))
             {
                 goLeft = false;
+                flickDirection = "default";
                 playerPos = CENTERAIR;
 
                 //位置調整？
@@ -210,6 +229,7 @@ public class PlayerController : MonoBehaviour
             if (goLeft && (playerPos == CENTERAIR) && (this.transform.position.x <= movablePos_left))
             {
                 goLeft = false;
+                flickDirection = "default";
                 playerPos = LEFTAIR;
 
                 //位置調整？
@@ -230,7 +250,7 @@ public class PlayerController : MonoBehaviour
             }
             #endregion
 
-            if (!isGrounded && (this.transform.position.y >= 0.3) && (playerPos == LEFT || playerPos == RIGHT || playerPos == CENTER))
+            if (!isGrounded && (this.transform.position.y >= 0.3) /*&& (playerPos == LEFT || playerPos == RIGHT || playerPos == CENTER)*/)
             {
                 this.playerAnimator.SetBool("isJumped", true);
             }
@@ -239,48 +259,53 @@ public class PlayerController : MonoBehaviour
             {
                 this.playerAnimator.SetBool("isJumped", false);
             }
+
+            //地面との接地判定
+            isGrounded = CheckGrounded();
+
+            if (isGrounded && (playerPos == LEFT || playerPos == CENTER || playerPos == RIGHT))
+            {
+                velocityY = -1f;
+                this.playerAnimator.SetBool("isFallen", false);
+            }
+
+            if (!isGrounded && this.transform.position.y <= -1 && !goUp)
+            {
+                velocityX = 0;
+                velocityY = -5;
+                velocityZ_normal = 0;
+                this.playerAnimator.SetBool("isFallen", true);
+            }
+
+            if (goRight)//goRight = trueなら、右方向に速度を与える
+            {
+                Debug.Log("in goRight");
+                velocityX = velocityX_move;
+            }
+
+            if (goLeft)//goLeft = trueなら、左方向に速度を与える。
+            {
+                Debug.Log("in goLeft");
+                velocityX = -velocityX_move;
+            }
+
+            if (goUp)
+            {
+                Debug.Log("in goUp");
+                velocityY = velocityY_move;
+            }
         }
     }
 
 
     void FixedUpdate()
     {
-        //地面との接地判定
-        
-        isGrounded = CheckGrounded();
-
-        if (isGrounded && (playerPos == LEFT || playerPos == CENTER || playerPos == RIGHT))
-        {
-            velocityY = -1f;
-            this.playerAnimator.SetBool("isFallen", false);
-        }
-        
-        if(!isGrounded && this.transform.position.y <= -1 && !goUp)
-        {
-            velocityX = 0;
-            velocityY = -5;
-            velocityZ_normal = 0;
-            this.playerAnimator.SetBool("isFallen", true);
-        }
 
 
         //物理演算部分だけをここに記述。
-        if (goRight)//goRight = trueなら、右方向に速度を与える
-        {
-            velocityX = velocityX_move;
-        }
 
-        if (goLeft)//goLeft = trueなら、左方向に速度を与える。
-        {
-            velocityX = -velocityX_move;
-        }
 
-        if (goUp)
-        {
-            velocityY = velocityY_move;
-        }
-
-        if(playerPos == LEFTAIR || playerPos == CENTERAIR || playerPos == RIGHTAIR)
+        if (playerPos == LEFTAIR || playerPos == CENTERAIR || playerPos == RIGHTAIR)
         {
             velocityY = this.playerRigidbody.velocity.y - 1.1f;
         }
@@ -373,6 +398,7 @@ public class PlayerController : MonoBehaviour
         if(touch.phase == TouchPhase.Ended)
         {
             touchEndPos = touch.position;
+            Debug.Log($"Start: {touchStartPos.ToString()} End: {touchEndPos.ToString()}");
             GetFlickDirection(touchStartPos, touchEndPos);
         }
 
@@ -392,10 +418,12 @@ public class PlayerController : MonoBehaviour
         {
             if(flickMinDistance < flickDirection_x)
             {
+                Debug.Log("flick right");
                 flickDirection = "right";
             }
             else if(-flickMinDistance > flickDirection_x)
             {
+                Debug.Log("flick left");
                 flickDirection = "left";
             }
         }
@@ -403,6 +431,7 @@ public class PlayerController : MonoBehaviour
         {
             if(flickMinDistance < flickDirection_y)
             {
+                Debug.Log("flick Jump");
                 flickDirection = "up";
             }
             else if(-flickMinDistance> flickDirection_y)
