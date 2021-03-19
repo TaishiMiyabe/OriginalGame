@@ -15,7 +15,7 @@ public class CoinColor : MonoBehaviour
         foreach(var child in children)
         {
             Color color = child.GetComponent<MeshRenderer>().material.color;
-            color.a = 0.7f;
+            color.a = 0.5f;
             child.GetComponent<MeshRenderer>().material.color = color;
         }
     }
