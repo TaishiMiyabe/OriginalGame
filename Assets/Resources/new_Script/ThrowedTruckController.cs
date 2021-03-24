@@ -1,11 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
-public class ThrowedTruckController : MonoBehaviour
+public class ThrowedTruckController : MonoBehaviour, IPointerClickHandler
 {
     GameObject fire;
     GameObject smoke;
+    public GameObject explosion;
 
     ParticleSystem fireParticle;
     ParticleSystem smokeParticle;
@@ -44,5 +46,17 @@ public class ThrowedTruckController : MonoBehaviour
     void Update()
     {
        // this.smallTruckRigidbody.velocity = new Vector3(truckVelocity_x, truckVelocity_y, truckVelocity_z);
+    }
+
+    public void OnClickAct()
+    {
+        Debug.Log("OnClickAct");
+        Instantiate(explosion, new Vector3(this.transform.position.x, this.transform.position.y - 1, this.transform.position.z), Quaternion.identity);
+        Destroy(this.gameObject);
+    }
+
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        Debug.Log("clicked");
     }
 }

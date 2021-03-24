@@ -93,7 +93,7 @@ public class PlayerController : MonoBehaviour
                         if (playerPos != RIGHTAIR && playerPos != RIGHT && !goLeft && !goUp /*&& (playerPos != LEFTAIR && playerPos != CENTERAIR && playerPos != RIGHTAIR)*/)
                         {
                             goRight = true;
-                            Debug.Log("switch right");
+                           // Debug.Log("switch right");
                         }
                         break;
 
@@ -101,7 +101,7 @@ public class PlayerController : MonoBehaviour
                         if (playerPos != LEFTAIR && playerPos != LEFT && !goRight && !goUp /*&& (playerPos != LEFTAIR && playerPos != CENTERAIR && playerPos != RIGHTAIR)*/)
                         {
                             goLeft = true;
-                            Debug.Log("switch left");
+                           // Debug.Log("switch left");
                         }
                         break;
 
@@ -109,7 +109,7 @@ public class PlayerController : MonoBehaviour
                         if (!goLeft && !goRight && (playerPos != LEFTAIR && playerPos != CENTERAIR && playerPos != RIGHTAIR))
                         {
                             goUp = true;
-                            Debug.Log("switch up");
+                           // Debug.Log("switch up");
                         }
                         break;
 
@@ -279,19 +279,19 @@ public class PlayerController : MonoBehaviour
 
             if (goRight)//goRight = trueなら、右方向に速度を与える
             {
-                Debug.Log("in goRight");
+               // Debug.Log("in goRight");
                 velocityX = velocityX_move;
             }
 
             if (goLeft)//goLeft = trueなら、左方向に速度を与える。
             {
-                Debug.Log("in goLeft");
+                //Debug.Log("in goLeft");
                 velocityX = -velocityX_move;
             }
 
             if (goUp)
             {
-                Debug.Log("in goUp");
+               // Debug.Log("in goUp");
                 velocityY = velocityY_move;
             }
         }
@@ -418,12 +418,12 @@ public class PlayerController : MonoBehaviour
         {
             if(flickMinDistance < flickDirection_x)
             {
-                Debug.Log("flick right");
+               // Debug.Log("flick right");
                 flickDirection = "right";
             }
             else if(-flickMinDistance > flickDirection_x)
             {
-                Debug.Log("flick left");
+               // Debug.Log("flick left");
                 flickDirection = "left";
             }
         }
@@ -431,7 +431,7 @@ public class PlayerController : MonoBehaviour
         {
             if(flickMinDistance < flickDirection_y)
             {
-                Debug.Log("flick Jump");
+               // Debug.Log("flick Jump");
                 flickDirection = "up";
             }
             else if(-flickMinDistance> flickDirection_y)
