@@ -10,7 +10,7 @@ HingeJoint:
   m_ConnectedBody: {fileID: 0}
   m_Anchor: {x: 0, y: 0, z: 1.1}
   m_Axis: {x: 1, y: 0, z: 0}
-  m_AutoConfigureConnectedAnchor: 1
+  m_AutoConfigureConnectedAnchor: 0
   m_ConnectedAnchor: {x: -17.2, y: 0.1, z: 3.8899999}
   m_UseSpring: 0
   m_Spring:
@@ -113,6 +113,11 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 13400000, guid: 468da0ddec2b10442b036239c3d1a344,
         type: 2}
+    - target: {fileID: 7581919864163583042, guid: c690c59069e81eb46b31fc03ee34cc5c,
+        type: 3}
+      propertyPath: m_IsKinematic
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c690c59069e81eb46b31fc03ee34cc5c, type: 3}
 --- !u!1 &3244479393666253612 stripped

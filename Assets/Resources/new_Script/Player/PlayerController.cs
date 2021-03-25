@@ -8,6 +8,9 @@ public class PlayerController : MonoBehaviour
 
     private Rigidbody playerRigidbody;
 
+    private GameObject righthand;
+    private GameObject lefthand;
+
     private float secondsFromCollided;
 
     AudioManager audio;
@@ -62,6 +65,9 @@ public class PlayerController : MonoBehaviour
         this.playerAnimator = GetComponent<Animator>();
 
         this.playerRigidbody = GetComponent<Rigidbody>();
+
+        this.righthand = this.transform.Find("Skelet.c/root/pelvis/spine_01/spine_02/spine_03/clavicle_r/upperarm_r/lowerarm_r/hand_r").gameObject;
+        this.lefthand = this.transform.Find("Skelet.c/root/pelvis/spine_01/spine_02/spine_03/clavicle_l/upperarm_l/lowerarm_l/hand_l").gameObject;
 
         playerPos = CENTER;
 
@@ -358,23 +364,15 @@ public class PlayerController : MonoBehaviour
             Destroy(other.gameObject);
         }
 
-        //if (other.gameObject.tag == "CupperCoins")
-        //{
-        //    audio.PlaySEByName("coin_01_multi");
-        //    Destroy(other.gameObject);
-        //}
-
-        //if (other.gameObject.tag == "SilverCoins")
-        //{
-        //    audio.PlaySEByName("coin_01_multi");
-        //    Destroy(other.gameObject);
-        //}
-
-        //if (other.gameObject.tag == "GoldCoins")
-        //{
-        //    audio.PlaySEByName("coin_01_multi");
-        //    Destroy(other.gameObject);
-        //}
+        //ポールに接触した時に、つかんで回転する
+        if(other.gameObject.tag == "Pole")
+        {
+            this.righthand.transform.position = new Vector3(other.gameObject.transform.position.x, other.gameObject.transform.position.y, other.gameObject.transform.position.z);
+            this.lefthand.transform.position = new Vector3(other.gameObject.transform.position.x, other.gameObject.transform.position.y, other.gameObject.transform.position.z);
+            HingeJoint HJ = this.righthand.AddComponent<HingeJoint>();
+            HJ.connectedBody = other.attachedRigidbody;
+            this.playerAnimator.SetBool("isCatched", true);
+        }
     }
 
     //地面と接地しているかの判定

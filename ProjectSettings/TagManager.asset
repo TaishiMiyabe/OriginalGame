@@ -20,6 +20,7 @@ TagManager:
   - CupperSingleCoin
   - SilverSingleCoin
   - Truck
+  - Pole
   layers:
   - Default
   - TransparentFX

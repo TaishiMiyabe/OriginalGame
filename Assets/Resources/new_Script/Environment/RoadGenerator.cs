@@ -33,6 +33,9 @@ public class RoadGenerator : MonoBehaviour
     //プレイヤー
     private GameObject player;
 
+    //電柱のヒンジジョイント
+    private HingeJoint HJ;
+
     //道生成の範囲の始まり線
     private float startLine = 0;
 
@@ -132,6 +135,8 @@ public class RoadGenerator : MonoBehaviour
                 }
                 else if (building_right.tag == "Lamp")
                 {
+                    HJ = building_right.GetComponent<HingeJoint>();
+                    HJ.connectedAnchor = new Vector3(building_right.transform.position.x, building_right.transform.position.y + 0.1f , stagePosition_right.x - 5.5f);
                     building_right.transform.position = new Vector3(building_right.transform.position.x, building_right.transform.position.y, stagePosition_right.x-5.5f);
                 }
                 else
@@ -171,6 +176,8 @@ public class RoadGenerator : MonoBehaviour
                 }
                 else if (building_left.tag == "Lamp")
                 {
+                    HJ = building_left.GetComponent<HingeJoint>();
+                    HJ.connectedAnchor = new Vector3(building_left.transform.position.x, building_left.transform.position.y + 0.1f, stagePosition_left.x - 6f);
                     building_left.transform.position = new Vector3(building_left.transform.position.x, building_left.transform.position.y, stagePosition_left.x -6f);
                 }
                 else
