@@ -319,9 +319,10 @@ public class PlayerController : MonoBehaviour
                 playerRigidbody.MovePosition(
                     new Vector3(
                         xPosition,
-                        radius * Mathf.Sin(Time.deltaTime * speed) + defaultPos.y,
-                        radius * Mathf.Cos(Time.deltaTime * speed) + defaultPos.z));
+                        radius * Mathf.Sin(Time.time * speed) + defaultPos.y,
+                        radius * Mathf.Cos(Time.time * speed) + defaultPos.z));
                 this.playerRigidbody.isKinematic = true;
+                //this.transform.Rotate(1f, 0, 0);←これでプレイヤー自体も回転させて、ポールを中心に回っているように見せる想定だった
                 //this.transform.RotateAround(poleTarget, Vector3.right, 30 * Time.deltaTime);
             }
         }
@@ -395,7 +396,7 @@ public class PlayerController : MonoBehaviour
         {
             Debug.Log("PoleOnTrigger");
             poleTarget = other.gameObject.transform.position;
-            defaultPos = this.transform.position;
+            defaultPos = new Vector3(poleTarget.x, poleTarget.y, poleTarget.z);
             xPosition = defaultPos.x;
             //this.righthand.transform.position = new Vector3(other.gameObject.transform.position.x, other.gameObject.transform.position.y, other.gameObject.transform.position.z);
             //this.lefthand.transform.position = new Vector3(other.gameObject.transform.position.x, other.gameObject.transform.position.y, other.gameObject.transform.position.z);
