@@ -1464,7 +1464,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2dd84b0d3a501bc46ab8a76ed9833879, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  volume: 0
+  volume: 0.5
   bgmVolume: 1
   seVolume: 1
   delayFrameCount: 4

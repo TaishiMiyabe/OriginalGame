@@ -59,6 +59,11 @@ public class PlayerController : MonoBehaviour
     private float radius;
     private float xPosition;
     private Vector3 defaultPos;
+    private Vector3 latestPos;
+    private Vector3 diff;//回転中のプレイヤーが向いている方向ベクトル
+    private float force = 150f;//プレイヤー発射の強さ
+    private bool releasePole = false;
+    private bool isLandedFromPole = true;
 
     //スクリーンタッチ時の、タッチ開始ポジションと終了ポジション
     private Vector3 touchStartPos;
@@ -81,7 +86,7 @@ public class PlayerController : MonoBehaviour
 
         audio = AudioManager.Instance;
 
-        speed = 1.0f;
+        speed = 2.0f;
         radius = 2.0f;
     }
 
@@ -91,8 +96,6 @@ public class PlayerController : MonoBehaviour
         if (StartCutFlag.isOver)
         {
             //Debug.Log(playerPos);
-            if (!isPoled)
-            {
                 //何も操作されていないときは0
                 velocityX = 0;
                 if (Input.touchCount > 0)//タッチされているならば
@@ -108,7 +111,7 @@ public class PlayerController : MonoBehaviour
                     switch (flickDirection)
                     {
                         case "right":
-                            if (playerPos != RIGHTAIR && playerPos != RIGHT && !goLeft && !goUp /*&& (playerPos != LEFTAIR && playerPos != CENTERAIR && playerPos != RIGHTAIR)*/)
+                            if (playerPos != RIGHTAIR && playerPos != RIGHT && !goLeft && !goUp && !isPoled /*&& (playerPos != LEFTAIR && playerPos != CENTERAIR && playerPos != RIGHTAIR)*/)
                             {
                                 goRight = true;
                                 // Debug.Log("switch right");
@@ -116,7 +119,7 @@ public class PlayerController : MonoBehaviour
                             break;
 
                         case "left":
-                            if (playerPos != LEFTAIR && playerPos != LEFT && !goRight && !goUp /*&& (playerPos != LEFTAIR && playerPos != CENTERAIR && playerPos != RIGHTAIR)*/)
+                            if (playerPos != LEFTAIR && playerPos != LEFT && !goRight && !goUp && !isPoled/*&& (playerPos != LEFTAIR && playerPos != CENTERAIR && playerPos != RIGHTAIR)*/)
                             {
                                 goLeft = true;
                                 // Debug.Log("switch left");
@@ -124,10 +127,14 @@ public class PlayerController : MonoBehaviour
                             break;
 
                         case "up":
-                            if (!goLeft && !goRight && (playerPos != LEFTAIR && playerPos != CENTERAIR && playerPos != RIGHTAIR))
+                            if (!goLeft && !goRight && !isPoled && (playerPos != LEFTAIR && playerPos != CENTERAIR && playerPos != RIGHTAIR))
                             {
                                 goUp = true;
                                 // Debug.Log("switch up");
+                            }
+                            else if(!goLeft && !goRight && isPoled)
+                            {
+                                releasePole = true;
                             }
                             break;
 
@@ -136,17 +143,22 @@ public class PlayerController : MonoBehaviour
                     }
                 }
                 #region pcから操作できるようにするための部分
-                if (Input.GetKey(KeyCode.LeftArrow) && playerPos != LEFTAIR && playerPos != LEFT && !goRight && !goUp /*&& (playerPos != LEFTAIR && playerPos != CENTERAIR && playerPos != RIGHTAIR)*/)
+                if (Input.GetKey(KeyCode.LeftArrow) && playerPos != LEFTAIR && playerPos != LEFT && !goRight && !goUp && !isPoled /*&& (playerPos != LEFTAIR && playerPos != CENTERAIR && playerPos != RIGHTAIR)*/)
                 {
                     goLeft = true;
                 }
-                if (Input.GetKey(KeyCode.RightArrow) && playerPos != RIGHTAIR && playerPos != RIGHT && !goLeft && !goUp /*&& (playerPos != LEFTAIR && playerPos != CENTERAIR && playerPos != RIGHTAIR)*/)
+                if (Input.GetKey(KeyCode.RightArrow) && playerPos != RIGHTAIR && playerPos != RIGHT && !goLeft && !goUp && !isPoled/*&& (playerPos != LEFTAIR && playerPos != CENTERAIR && playerPos != RIGHTAIR)*/)
                 {
                     goRight = true;
                 }
-                if (Input.GetKey(KeyCode.Space) && !goRight && !goLeft && (playerPos != LEFTAIR && playerPos != CENTERAIR && playerPos != RIGHTAIR))
+                if (Input.GetKey(KeyCode.Space) && !goRight && !goLeft && !isPoled && (playerPos != LEFTAIR && playerPos != CENTERAIR && playerPos != RIGHTAIR))
                 {
                     goUp = true;
+                }
+                if(Input.GetKey(KeyCode.Space)&& !goLeft && !goRight && isPoled)
+                {
+                    Debug.Log(isPoled);
+                    releasePole = true;
                 }
                 #endregion
 
@@ -253,8 +265,18 @@ public class PlayerController : MonoBehaviour
                     //位置調整？
                     this.transform.position = new Vector3(movablePos_left, this.transform.position.y, this.transform.position.z);
                 }
-                //着地した時
-                if (playerPos == LEFTAIR && isGrounded && this.transform.position.y < 0.1f)
+
+                //ポールにつかまっていた時
+                if(!isPoled && releasePole)
+                {
+                    releasePole = false;
+                    flickDirection = "default";
+                    this.playerAnimator.SetBool("isCatched", false);
+            }
+            if (!isPoled)
+            {
+                    //着地した時
+                    if (playerPos == LEFTAIR && isGrounded && this.transform.position.y < 0.1f)
                 {
                     playerPos = LEFT;
                 }
@@ -280,6 +302,12 @@ public class PlayerController : MonoBehaviour
 
                 //地面との接地判定
                 isGrounded = CheckGrounded();
+
+                //ポールを離して着地をしたときに一回だけ呼ぶ。
+                if(!isLandedFromPole && isGrounded)
+                {
+                    isLandedFromPole = true;
+                }
 
                 if (isGrounded && (playerPos == LEFT || playerPos == CENTER || playerPos == RIGHT))
                 {
@@ -315,15 +343,21 @@ public class PlayerController : MonoBehaviour
             }
             else
             {
-                Debug.Log("isPoledUpdate");
-                playerRigidbody.MovePosition(
-                    new Vector3(
-                        xPosition,
-                        radius * Mathf.Sin(Time.time * speed) + defaultPos.y,
-                        radius * Mathf.Cos(Time.time * speed) + defaultPos.z));
+                Debug.Log(diff);
+                //playerRigidbody.MovePosition(
+                //    new Vector3(
+                //        xPosition,
+                //        radius * Mathf.Sin(Time.time * speed) + defaultPos.y,
+                //        radius * Mathf.Cos(Time.time * speed) + defaultPos.z));
+                //this.transform.Rotate(1f, 0, 0);//これでプレイヤー自体も回転させて、ポールを中心に回っているように見せる想定だった
                 this.playerRigidbody.isKinematic = true;
-                //this.transform.Rotate(1f, 0, 0);←これでプレイヤー自体も回転させて、ポールを中心に回っているように見せる想定だった
-                //this.transform.RotateAround(poleTarget, Vector3.right, 30 * Time.deltaTime);
+                this.transform.RotateAround(defaultPos, Vector3.left, 180 * Time.deltaTime);
+                //回転中のプレイヤーが向いている方向の取得
+                diff = transform.position - latestPos;
+                latestPos = transform.position;
+
+
+
             }
         }
     }
@@ -337,24 +371,41 @@ public class PlayerController : MonoBehaviour
 
         if (!isPoled)
         {
-            if (playerPos == LEFTAIR || playerPos == CENTERAIR || playerPos == RIGHTAIR)
+            if (isLandedFromPole)
             {
-                velocityY = this.playerRigidbody.velocity.y - 1.1f;
+                if (playerPos == LEFTAIR || playerPos == CENTERAIR || playerPos == RIGHTAIR)
+                {
+                    velocityY = this.playerRigidbody.velocity.y - 1.1f;
+                }
+                //通常時のプレイヤーの速度を与える
+                this.playerRigidbody.velocity = new Vector3(velocityX, velocityY, this.velocityZ_normal);
+
+                if (isCollided)
+                {
+                    secondsFromCollided += Time.deltaTime;
+                    this.playerRigidbody.velocity = new Vector3(velocityX, velocityY, this.velocityZ_slow);
+
+                }
+
+                if (secondsFromCollided >= 2)
+                {
+                    isCollided = false;
+                    secondsFromCollided = 0;
+                }
             }
-            //通常時のプレイヤーの速度を与える
-            this.playerRigidbody.velocity = new Vector3(velocityX, velocityY, this.velocityZ_normal);
-
-            if (isCollided)
+            else
             {
-                secondsFromCollided += Time.deltaTime;
-                this.playerRigidbody.velocity = new Vector3(velocityX, velocityY, this.velocityZ_slow);
-
+                this.playerRigidbody.AddForce(Vector3.down * 10f);
             }
-
-            if (secondsFromCollided >= 2)
+        }
+        else
+        {
+            if (releasePole)
             {
-                isCollided = false;
-                secondsFromCollided = 0;
+                this.playerRigidbody.isKinematic = false;
+                this.playerRigidbody.AddForce(diff * force, ForceMode.Impulse); 
+                this.transform.rotation = Quaternion.Euler(0,0,0);
+                isPoled = false;
             }
         }
     }
@@ -396,8 +447,8 @@ public class PlayerController : MonoBehaviour
         {
             Debug.Log("PoleOnTrigger");
             poleTarget = other.gameObject.transform.position;
-            defaultPos = new Vector3(poleTarget.x, poleTarget.y, poleTarget.z);
-            xPosition = defaultPos.x;
+            defaultPos = new Vector3(XPos_start, poleTarget.y, poleTarget.z);
+            this.gameObject.transform.position = new Vector3(this.transform.position.x, other.gameObject.transform.position.y -2.5f, other.gameObject.transform.position.z);
             //this.righthand.transform.position = new Vector3(other.gameObject.transform.position.x, other.gameObject.transform.position.y, other.gameObject.transform.position.z);
             //this.lefthand.transform.position = new Vector3(other.gameObject.transform.position.x, other.gameObject.transform.position.y, other.gameObject.transform.position.z);
             //HingeJoint HJ = this.righthand.AddComponent<HingeJoint>();
@@ -405,6 +456,7 @@ public class PlayerController : MonoBehaviour
             //this.transform.RotateAround(target, Vector3.right, 30 * Time.deltaTime);
             this.playerAnimator.SetBool("isCatched", true);
             isPoled = true;
+            isLandedFromPole = false;
         }
     }
 

@@ -2,23 +2,22 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PollController : MonoBehaviour
+public class PollController_Right : MonoBehaviour
 {
     private Rigidbody pollRigidbody;
 
+    private Vector3 force;
     // Start is called before the first frame update
     void Start()
     {
         pollRigidbody = GetComponent<Rigidbody>();
+
+        force = new Vector3(1, 0, 0);
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(this.transform.position.y <= 1 &&(this.transform.localEulerAngles.x <= 270))
-        {
-            Debug.Log(this.transform.localEulerAngles.x);
-            pollRigidbody.isKinematic = true;
-        }
+        this.pollRigidbody.isKinematic = true;
     }
 }
